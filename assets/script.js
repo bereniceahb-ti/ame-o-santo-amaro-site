@@ -80,4 +80,28 @@ document.addEventListener('DOMContentLoaded', function () {
       nums.forEach(function (el) { obs.observe(el); });
     }
   }
+
+  // Carrossel do hero (manual, sem autoplay)
+  var hero = document.querySelector('.highlight');
+  if (hero) {
+    var hslides = [].slice.call(hero.querySelectorAll('.hl-slide'));
+    var hdots = [].slice.call(hero.querySelectorAll('.hl-dot'));
+    if (hslides.length > 1) {
+      var hi = 0;
+      var hreduz = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (hreduz) { hero.classList.add('no-anim'); }
+
+      function heroGo(n) {
+        hi = (n + hslides.length) % hslides.length;
+        hslides.forEach(function (s, idx) { s.classList.toggle('is-active', idx === hi); });
+        hdots.forEach(function (d, idx) { d.classList.toggle('is-active', idx === hi); });
+      }
+
+      var hprev = hero.querySelector('.hl-prev');
+      var hnext = hero.querySelector('.hl-next');
+      if (hprev) { hprev.addEventListener('click', function () { heroGo(hi - 1); }); }
+      if (hnext) { hnext.addEventListener('click', function () { heroGo(hi + 1); }); }
+      hdots.forEach(function (d, idx) { d.addEventListener('click', function () { heroGo(idx); }); });
+    }
+  }
 });

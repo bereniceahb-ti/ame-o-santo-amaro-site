@@ -73,8 +73,19 @@
   </nav>
 </header>
 
-<!-- ===== HERO DE DESTAQUE ===== -->
+<!-- ===== HERO DE DESTAQUE (carrossel manual) ===== -->
 <section class="highlight">
+  <div class="hl-bg" aria-hidden="true">
+    <div class="hl-slide is-active" style="background-color:#C7702E;"><span class="hl-ph">Foto · crianças</span></div>
+    <div class="hl-slide" style="background-color:#2F6E4F;"><span class="hl-ph">Foto · comunidade</span></div>
+    <div class="hl-slide" style="background-color:#3A5A78;"><span class="hl-ph">Foto · projetos sociais</span></div>
+    <div class="hl-slide hl-slide--claro" style="background-color:#E8E0CF;"><span class="hl-ph">Foto · oficina (clara)</span></div>
+  </div>
+  <div class="hl-overlay" aria-hidden="true"></div>
+
+  <button class="hl-nav hl-prev" type="button" aria-label="Imagem anterior">‹</button>
+  <button class="hl-nav hl-next" type="button" aria-label="Próxima imagem">›</button>
+
   <div class="container">
     <span class="kicker">Instituto de Direitos Humanos</span>
     <h1>Amar o Santo Amaro é transformar vidas todos os dias</h1>
@@ -83,6 +94,13 @@
       <a class="btn btn--gold btn--lg" href="como-ajudar.html#doar">Quero ajudar agora</a>
       <a class="btn btn--ghost btn--lg" href="acoes.html">Conheça nossas ações</a>
     </div>
+  </div>
+
+  <div class="hl-dots" aria-label="Selecionar imagem">
+    <button class="hl-dot is-active" type="button" aria-label="Imagem 1"></button>
+    <button class="hl-dot" type="button" aria-label="Imagem 2"></button>
+    <button class="hl-dot" type="button" aria-label="Imagem 3"></button>
+    <button class="hl-dot" type="button" aria-label="Imagem 4"></button>
   </div>
 </section>
 
