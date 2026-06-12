@@ -37,4 +37,47 @@ document.addEventListener('DOMContentLoaded', function () {
       f.reset();
     });
   });
+
+  // Contagem crescente (count-up) nos números de impacto
+  var nums = document.querySelectorAll('.num[data-count]');
+  if (nums.length) {
+    var reduzido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function formata(el, valor) {
+      var prefixo = el.getAttribute('data-prefix') || '';
+      var txt = el.getAttribute('data-sep')
+        ? Math.round(valor).toLocaleString('pt-BR')
+        : String(Math.round(valor));
+      el.textContent = prefixo + txt;
+    }
+
+    function anima(el) {
+      var alvo = parseInt(el.getAttribute('data-count'), 10);
+      if (isNaN(alvo)) { return; }
+      var dur = 1400, ini = null;
+      function passo(t) {
+        if (ini === null) { ini = t; }
+        var p = Math.min((t - ini) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3); // ease-out cúbico
+        formata(el, alvo * eased);
+        if (p < 1) { requestAnimationFrame(passo); }
+        else { formata(el, alvo); }
+      }
+      requestAnimationFrame(passo);
+    }
+
+    // Sem animação: mantém o valor final já presente no HTML
+    if (!reduzido && 'IntersectionObserver' in window) {
+      nums.forEach(function (el) { formata(el, 0); });
+      var obs = new IntersectionObserver(function (entradas, observer) {
+        entradas.forEach(function (entrada) {
+          if (entrada.isIntersecting) {
+            anima(entrada.target);
+            observer.unobserve(entrada.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      nums.forEach(function (el) { obs.observe(el); });
+    }
+  }
 });
