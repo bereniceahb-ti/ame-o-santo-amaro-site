@@ -338,8 +338,8 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .highlight h1 { font-family: var(--fonte-display); font-size: clamp(2.4rem, 5.5vw, 4.4rem); line-height: 1.05; text-transform: uppercase; letter-spacing: .04em; max-width: 20ch; margin-bottom: 18px; }
 .highlight p { font-size: clamp(1.05rem,2vw,1.35rem); max-width: 60ch; color: rgba(255,255,255,.92); margin-bottom: 28px; }
 .highlight-actions { display: flex; flex-wrap: wrap; gap: 14px; }
-/* Desloca o texto da hero ~40px à esquerda no desktop para não cobrir rostos da foto de fundo */
-@media (min-width: 961px) { .highlight .container { transform: translateX(-40px); } }
+/* Desloca o texto da hero ~80px à esquerda no desktop para não cobrir rostos da foto de fundo */
+@media (min-width: 961px) { .highlight .container { transform: translateX(-80px); } }
 
 /* mini destaques laterais (3 manchetes) */
 .subheads { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(26,21,20,.08); border-bottom: 4px solid var(--vermelho); }
