@@ -316,11 +316,13 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .highlight::after { content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:
   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M0 79h80M79 0v80' stroke='%23ffffff' stroke-opacity='.06' stroke-width='1'/%3E%3C/svg%3E"); }
 
-/* Carrossel do hero (manual, sem autoplay) */
+/* Carrossel do hero (automático; slide 1 institucional + notícias recentes) */
 .hl-bg { position:absolute; inset:0; z-index:0; }
 .hl-slide { position:absolute; inset:0; opacity:0; transition:opacity .6s ease; background-size:cover; background-position:center; display:grid; place-items:center; }
 .hl-slide.is-active { opacity:1; }
 .highlight.no-anim .hl-slide { transition:none; }
+/* Placeholder de notícia sem foto: ocupa toda a hero, igual à 1ª foto */
+.hl-slide--ph { background-image: linear-gradient(135deg,#A12A24,#7C1C18 60%,#5A1310); }
 .hl-ph { font-family:var(--fonte-titulo); font-weight:700; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.5); }
 .hl-slide--claro .hl-ph { color:rgba(26,21,20,.4); }
 .hl-overlay { position:absolute; inset:0; z-index:1; pointer-events:none; background:
@@ -338,6 +340,8 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .highlight h1 { font-family: var(--fonte-display); font-size: clamp(2.4rem, 5.5vw, 4.4rem); line-height: 1.05; text-transform: uppercase; letter-spacing: .04em; max-width: 20ch; margin-bottom: 18px; }
 .highlight p { font-size: clamp(1.05rem,2vw,1.35rem); max-width: 60ch; color: rgba(255,255,255,.92); margin-bottom: 28px; }
 .highlight-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+/* Título de notícia exibido nos slides do carrossel da hero */
+.highlight .hl-news-title { font-family: var(--fonte-display); font-size: clamp(1.7rem,3.6vw,3rem); line-height: 1.1; text-transform: uppercase; letter-spacing: .03em; max-width: 24ch; margin-bottom: 22px; }
 /* Desloca o texto da hero ~80px à esquerda no desktop para não cobrir rostos da foto de fundo */
 @media (min-width: 961px) { .highlight .container { transform: translateX(-80px); } }
 
@@ -449,3 +453,28 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
   .hl-nav { width:38px; height:38px; font-size:1.5rem; background:rgba(255,255,255,.78); }
   .hl-prev { left:10px; } .hl-next { right:10px; }
 }
+
+/* ---------- Notícias (CMS) ---------- */
+.noticias-vazio { color: var(--cinza); font-size: 1.05rem; text-align: center; padding: 24px 0; grid-column: 1 / -1; }
+
+/* Página individual de notícia */
+.noticia-artigo { max-width: 760px; }
+.noticia-artigo .breadcrumb { font-size: .85rem; color: var(--cinza-claro); margin-bottom: 14px; font-weight: 600; letter-spacing: .03em; }
+.noticia-artigo .meta { font-size: .82rem; color: var(--cinza-claro); margin-bottom: 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+.noticia-artigo h1 { font-family: var(--fonte-display); text-transform: uppercase; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.05; margin-bottom: 18px; }
+.noticia-resumo { font-size: 1.2rem; color: var(--cinza); line-height: 1.6; margin-bottom: 10px; }
+.noticia-autor { font-size: .9rem; color: var(--cinza-claro); font-weight: 600; margin-bottom: 24px; }
+.noticia-capa { width: 100%; border-radius: var(--raio); margin: 8px 0 28px; display: block; }
+.noticia-corpo { font-size: 1.06rem; line-height: 1.75; color: var(--carvao); }
+.noticia-corpo p { margin: 0 0 1.1em; }
+.noticia-corpo h2 { font-size: 1.6rem; margin: 1.4em 0 .5em; }
+.noticia-corpo h3 { font-size: 1.3rem; margin: 1.3em 0 .5em; }
+.noticia-corpo h4 { font-size: 1.1rem; margin: 1.2em 0 .5em; }
+.noticia-corpo ul, .noticia-corpo ol { margin: 0 0 1.1em 1.3em; }
+.noticia-corpo li { margin-bottom: .4em; }
+.noticia-corpo a { text-decoration: underline; }
+.noticia-corpo blockquote { margin: 1.4em 0; padding: 4px 0 4px 20px; border-left: 4px solid var(--vermelho); color: var(--cinza); font-style: italic; }
+.noticia-corpo figure { margin: 1.6em 0; }
+.noticia-corpo figure img { width: 100%; border-radius: var(--raio); display: block; }
+.noticia-corpo figcaption { font-size: .85rem; color: var(--cinza-claro); text-align: center; margin-top: 8px; }
+.noticia-voltar { margin-top: 36px; }
