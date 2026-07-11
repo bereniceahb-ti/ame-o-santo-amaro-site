@@ -179,6 +179,41 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
+    // Trava a altura da seção no maior conteúdo entre todos os slides
+    // (institucional + notícias), para que a imagem de fundo (cover)
+    // ocupe sempre a mesma caixa, não importa qual painel de texto
+    // está ativo. Sem isso, o slide 1 (com título+parágrafo) deixava
+    // a seção mais alta que os slides de notícia (só título), fazendo
+    // a 1ª foto parecer "maior" que as demais.
+    function sincronizaAltura() {
+      if (!pane) { return; }
+      var variantesHTML = [introHTML].concat(noticias.map(function (n) {
+        return '<span class="kicker">' + escapaHTML(n.cat) + '</span>' +
+          '<h2 class="hl-news-title">' + escapaHTML(n.titulo) + '</h2>' +
+          '<div class="highlight-actions">' +
+            '<a class="btn btn--gold btn--lg" href="' + n.href + '">Ler notícia</a>' +
+            '<a class="btn btn--ghost btn--lg" href="noticias.html">Ver todas as notícias</a>' +
+          '</div>';
+      }));
+      var htmlAtual = pane.innerHTML;
+      var maior = 0;
+      variantesHTML.forEach(function (html) {
+        pane.innerHTML = html;
+        maior = Math.max(maior, pane.offsetHeight);
+      });
+      pane.innerHTML = htmlAtual;
+      if (maior > 0) { hero.style.height = maior + 'px'; }
+    }
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(sincronizaAltura, 150);
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(sincronizaAltura);
+    }
+
     function heroGo(n) {
       hi = (n + total) % total;
       hslides.forEach(function (s, idx) { s.classList.toggle('is-active', idx === hi); });
@@ -205,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (document.hidden) { para(); } else { inicia(); }
     });
 
+    sincronizaAltura();
     heroGo(0);
     inicia();
   }
