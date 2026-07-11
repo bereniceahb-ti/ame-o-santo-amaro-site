@@ -203,6 +203,46 @@
     return consulta(groq, { slug: slug });
   }
 
+  // Notícias filtradas por categoria (ex.: posts/atualizações do Observatório
+  // exibidos dentro da própria página do núcleo, além de aparecerem em "Notícias").
+  function buscaListaPorCategoria(categoria, limite) {
+    var fatia = limite ? ('[0...' + limite + ']') : '';
+    var groq = '*[_type=="noticia" && category==$categoria && defined(slug.current)]' +
+      '|order(coalesce(publishedAt,_createdAt) desc)' + fatia + CAMPOS_LISTA;
+    return consulta(groq, { categoria: categoria });
+  }
+
+  // ---- Publicações (pesquisas/artigos/relatórios) ---------------------
+  var CAMPOS_PUBLICACAO =
+    '{_id,title,tipo,resumo,autores,destaque,"date":publishedAt,' +
+    '"capaRef":capa.asset._ref,"capaAlt":capa.alt,' +
+    '"arquivoUrl":arquivo.asset->url,linkExterno}';
+
+  function buscaPublicacoes(nucleo, limite) {
+    var fatia = limite ? ('[0...' + limite + ']') : '';
+    var groq = '*[_type=="publicacao" && nucleo==$nucleo]' +
+      '|order(coalesce(publishedAt,_createdAt) desc)' + fatia + CAMPOS_PUBLICACAO;
+    return consulta(groq, { nucleo: nucleo });
+  }
+
+  function cartaoPublicacaoHTML(p) {
+    var link = p.arquivoUrl || p.linkExterno;
+    var rotulo = p.arquivoUrl ? 'Baixar PDF' : 'Acessar';
+    var dest = p.destaque ? '<span>&#9733; Destaque</span>' : '';
+    return '<article class="news-card">' +
+      thumbHTML({ imgRef: p.capaRef, imgAlt: p.capaAlt || p.title, title: p.title }) +
+      '<div class="body">' +
+        '<div class="meta"><span>' + escapaHTML(p.tipo || 'Publicação') + '</span>' +
+          (formataData(p.date) ? '<span>' + formataData(p.date) + '</span>' : '') + dest +
+        '</div>' +
+        '<h3>' + escapaHTML(p.title) + '</h3>' +
+        '<p>' + escapaHTML(p.resumo || '') + '</p>' +
+        (p.autores ? '<p class="noticia-autor">' + escapaHTML(p.autores) + '</p>' : '') +
+        (link ? '<a class="card-link" href="' + escapaHTML(link) +
+          '" target="_blank" rel="noopener">' + rotulo + ' &rarr;</a>' : '') +
+      '</div></article>';
+  }
+
   // ---- preenchimento das seções --------------------------------------
   function preencheHome() {
     var alvo = document.querySelector('[data-noticias-home]');
@@ -276,10 +316,57 @@
       '&larr; Voltar para todas as notícias</a></p></div>';
   }
 
+  // Preenche todo elemento com [data-noticias-categoria="Observatório"] (ou
+  // outra categoria) com os posts curtos daquela categoria. Usado em páginas
+  // de núcleo (ex.: nucleos/observatorio.html) para mostrar atualizações.
+  function preencheCategoria() {
+    var alvos = document.querySelectorAll('[data-noticias-categoria]');
+    for (var i = 0; i < alvos.length; i++) {
+      (function (alvo) {
+        var categoria = alvo.getAttribute('data-noticias-categoria');
+        if (!CONFIGURADO || !categoria) { return; }
+        var limiteAttr = alvo.getAttribute('data-limite');
+        buscaListaPorCategoria(categoria, limiteAttr ? Number(limiteAttr) : null)
+          .then(function (lista) {
+            if (lista && lista.length) {
+              alvo.innerHTML = lista.map(cartaoHTML).join('');
+            } else {
+              alvo.innerHTML = '<p class="noticias-vazio">Ainda não há publicações ' +
+                'nesta seção. Volte em breve.</p>';
+            }
+          }).catch(function () { /* mantém o conteúdo estático da página */ });
+      })(alvos[i]);
+    }
+  }
+
+  // Preenche todo elemento com [data-publicacoes-nucleo="Observatório"] com
+  // as publicações (pesquisas/artigos/relatórios) cadastradas para o núcleo.
+  function preenchePublicacoes() {
+    var alvos = document.querySelectorAll('[data-publicacoes-nucleo]');
+    for (var i = 0; i < alvos.length; i++) {
+      (function (alvo) {
+        var nucleo = alvo.getAttribute('data-publicacoes-nucleo');
+        if (!CONFIGURADO || !nucleo) { return; }
+        var limiteAttr = alvo.getAttribute('data-limite');
+        buscaPublicacoes(nucleo, limiteAttr ? Number(limiteAttr) : null)
+          .then(function (lista) {
+            if (lista && lista.length) {
+              alvo.innerHTML = lista.map(cartaoPublicacaoHTML).join('');
+            } else {
+              alvo.innerHTML = '<p class="noticias-vazio">Ainda não há publicações ' +
+                'cadastradas. Volte em breve.</p>';
+            }
+          }).catch(function () { /* mantém o conteúdo estático da página */ });
+      })(alvos[i]);
+    }
+  }
+
   // ---- inicialização --------------------------------------------------
   // A home expõe uma promessa para o carrossel do topo (script.js) aguardar
   // os cartões dinâmicos antes de montar os slides.
   window.AME_noticiasReady = preencheHome();
   preencheLista();
   preencheDetalhe();
+  preencheCategoria();
+  preenchePublicacoes();
 })();
