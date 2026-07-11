@@ -1,8 +1,9 @@
-# Painel de Notícias — Instituto AME (Sanity Studio)
+# Painel de Notícias e Publicações — Instituto AME (Sanity Studio)
 
 Este é o **painel administrativo** onde o presidente publica, edita e remove
-notícias. As notícias publicadas aparecem automaticamente no site, sem mexer
-no código.
+notícias e publicações (pesquisas/relatórios) — inclusive da aba **Observatório
+do Santo Amaro**. O conteúdo publicado aparece automaticamente no site, sem
+mexer no código.
 
 > Esta pasta é usada **uma única vez** na configuração (por quem cuida da parte
 > técnica). Depois de publicado, o presidente acessa apenas pela URL do painel.
@@ -49,6 +50,11 @@ npm run dev
 # abre em http://localhost:3333
 ```
 
+> **Atenção:** sempre que o **schema** mudar (por exemplo, a adição do tipo
+> "Publicação"), é preciso rodar `npx sanity deploy` de novo para o painel
+> online refletir a mudança. Isso não afeta as notícias/publicações já
+> cadastradas.
+
 ---
 
 ## 2. Como o presidente publica uma notícia
@@ -63,6 +69,24 @@ npm run dev
 - **Editar:** abrir a notícia, alterar, **Publish** de novo.
 - **Despublicar / remover do site:** abrir a notícia → menu (•••) →
   **Unpublish** (tira do site sem apagar) ou **Delete** (apaga de vez).
+
+### Publicar conteúdo na aba do Observatório
+
+A página do Observatório (`nucleos/observatorio.html`) mostra dois tipos de
+conteúdo automaticamente, sem precisar mexer no código:
+
+- **Posts curtos / atualizações** → criar uma **Notícia** normal (como acima)
+  e escolher a **Categoria "Observatório"**. Ela aparece na aba do Observatório
+  *e* em "Notícias".
+- **Pesquisas, relatórios e dados** → clicar em **"Publicação"** → **"Create
+  new"**. Preencher **Título**, escolher o **Núcleo "Observatório do Santo
+  Amaro"**, o **Tipo** de material (Pesquisa/Artigo/Relatório/Dado), o
+  **Resumo** e, se houver, enviar o **arquivo PDF** (ou colar um **link
+  externo**, por exemplo do DataLabe). Clicar em **Publish**.
+
+O mesmo tipo **"Publicação"** serve para outros núcleos (Repositório, Cine
+Santo Amaro etc.) — basta escolher o núcleo correspondente no campo
+correspondente; cada página só mostra as publicações marcadas para ela.
 
 ---
 
