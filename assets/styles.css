@@ -347,7 +347,7 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .highlight p { font-size: clamp(1.05rem,2vw,1.35rem); max-width: 60ch; color: rgba(255,255,255,.92); margin-bottom: 28px; }
 .highlight-actions { display: flex; flex-wrap: wrap; gap: 14px; }
 /* Título de notícia exibido nos slides do carrossel da hero */
-.highlight .hl-news-title { font-family: var(--fonte-display); font-size: clamp(1.7rem,3.6vw,3rem); line-height: 1.1; text-transform: uppercase; letter-spacing: .03em; max-width: 24ch; margin-bottom: 22px; }
+.highlight .hl-news-title { font-family: var(--fonte-titulo); font-weight: 700; font-size: clamp(1.7rem,3.6vw,3rem); line-height: 1.28; text-transform: uppercase; letter-spacing: .02em; max-width: 24ch; margin-bottom: 22px; }
 /* Desloca o texto da hero ~80px à esquerda no desktop para não cobrir rostos da foto de fundo */
 @media (min-width: 961px) { .highlight .container { transform: translateX(-80px); } }
 
