@@ -192,7 +192,7 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 }
 .card:hover { transform: translateY(-4px); box-shadow: var(--sombra-md); }
 .card .icon { width: 54px; height: 54px; border-radius: 14px; background: var(--creme); color: var(--vermelho); display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 18px; }
-.card h3 { font-size: 1.3rem; }
+.card h3 { font-size: 1.3rem; color: var(--carvao); }
 .ano-titulo { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--vermelho); padding-bottom: 8px; border-bottom: 3px solid var(--creme); }
 .card p { color: var(--cinza); margin: 0 0 16px; font-size: .98rem; }
 .card .card-link { margin-top: auto; font-family: var(--fonte-titulo); font-weight: 700; font-size: .92rem; }
