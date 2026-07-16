@@ -243,6 +243,60 @@
       '</div></article>';
   }
 
+  // ---- Cronograma de atividades (imagem mensal por núcleo) ------------
+  var CAMPOS_CRONOGRAMA =
+    '{_id,title,"mes":mesReferencia,' +
+    '"imgRef":imagem.asset._ref,"imgAlt":imagem.alt,' +
+    '"arquivoUrl":arquivo.asset->url}';
+
+  function formataMesAno(iso) {
+    if (!iso) { return ''; }
+    var d = new Date(iso + 'T00:00:00');
+    if (isNaN(d.getTime())) { return ''; }
+    var MESES_LONGOS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+      'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    return MESES_LONGOS[d.getMonth()] + ' de ' + d.getFullYear();
+  }
+
+  // Busca o cronograma mais recente (pelo mês de referência) de um núcleo.
+  function buscaCronogramaAtual(nucleo) {
+    var groq = '*[_type=="cronograma" && nucleo==$nucleo]' +
+      '|order(mesReferencia desc)[0]' + CAMPOS_CRONOGRAMA;
+    return consulta(groq, { nucleo: nucleo });
+  }
+
+  function cronogramaHTML(c) {
+    var src = urlImagem(c.imgRef, { w: 900 });
+    if (!src) { return ''; }
+    var titulo = c.title || ('Cronograma — ' + formataMesAno(c.mes));
+    return '<figure class="cronograma-figure">' +
+      '<img src="' + src + '" alt="' + escapaHTML(c.imgAlt || titulo) + '" loading="lazy">' +
+      '<figcaption>' + escapaHTML(titulo) + '</figcaption>' +
+      (c.arquivoUrl ? '<p style="margin-top:14px"><a class="card-link" href="' +
+        escapaHTML(c.arquivoUrl) + '" target="_blank" rel="noopener">Baixar PDF &rarr;</a></p>' : '') +
+      '</figure>';
+  }
+
+  // Preenche todo elemento com [data-cronograma-nucleo="Elas"] com o
+  // cronograma mais recente cadastrado no Sanity para aquele núcleo.
+  // Se o Sanity ainda não tiver nenhum cronograma cadastrado (ou estiver
+  // indisponível), mantém a imagem estática que já está na página.
+  function preencheCronograma() {
+    var alvos = document.querySelectorAll('[data-cronograma-nucleo]');
+    for (var i = 0; i < alvos.length; i++) {
+      (function (alvo) {
+        var nucleo = alvo.getAttribute('data-cronograma-nucleo');
+        if (!CONFIGURADO || !nucleo) { return; }
+        buscaCronogramaAtual(nucleo).then(function (c) {
+          if (c && c.imgRef) {
+            alvo.innerHTML = cronogramaHTML(c);
+          }
+          // se não houver cronograma cadastrado, mantém o conteúdo estático
+        }).catch(function () { /* mantém o conteúdo estático da página */ });
+      })(alvos[i]);
+    }
+  }
+
   // ---- preenchimento das seções --------------------------------------
   function preencheHome() {
     var alvo = document.querySelector('[data-noticias-home]');
@@ -369,4 +423,5 @@
   preencheDetalhe();
   preencheCategoria();
   preenchePublicacoes();
+  preencheCronograma();
 })();

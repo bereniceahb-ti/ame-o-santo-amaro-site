@@ -219,6 +219,12 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .media-frame { border-radius: var(--raio); overflow: hidden; box-shadow: var(--sombra-md); aspect-ratio: 4/3; background: var(--creme); }
 .media-frame img { width: 100%; height: 100%; object-fit: cover; }
 
+/* cronograma de atividades (imagem completa, sem corte) */
+.cronograma-wrap { display: flex; justify-content: center; }
+.cronograma-figure { max-width: 480px; width: 100%; margin: 0; background: #fff; border-radius: var(--raio); box-shadow: var(--sombra-md); padding: 12px; text-align: center; }
+.cronograma-figure img { width: 100%; height: auto; display: block; border-radius: calc(var(--raio) - 6px); }
+.cronograma-figure figcaption { margin-top: 12px; font-family: var(--fonte-titulo); font-weight: 700; color: var(--vermelho); font-size: .9rem; }
+
 /* placeholder de imagem */
 .img-ph { display: grid; place-items: center; text-align: center; color: var(--vermelho); background:
   repeating-linear-gradient(45deg, rgba(161,42,36,.06) 0 12px, rgba(161,42,36,.11) 12px 24px); font-family: var(--fonte-titulo); font-weight: 700; padding: 24px; gap: 6px; }
