@@ -142,11 +142,12 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .footer-brand .brand .brand-logo { background: rgba(255,255,255,.06); padding: 4px; }
 .brand span small { display: block; font-family: var(--fonte-texto); font-weight: 600; font-size: .72rem; letter-spacing: .14em; color: var(--cinza); }
 
-.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.nav-links { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
 .nav-links > li { position: relative; }
 .nav-links a {
-  font-family: var(--fonte-titulo); font-weight: 600; font-size: .95rem;
-  color: var(--carvao); padding: 10px 14px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--fonte-titulo); font-weight: 600; font-size: .9rem;
+  color: var(--carvao); padding: 10px 11px; border-radius: 10px; display: inline-flex; align-items: center; gap: 5px;
+  white-space: nowrap;
 }
 .nav-links a:hover, .nav-links a.active { color: var(--vermelho); background: rgba(161,42,36,.07); }
 
@@ -458,21 +459,25 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
   .split.reverse > :first-child { order: 0; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 760px) {
-  .brand { font-size: 1.05rem; gap: 10px; min-width: 0; flex: 1; }
-  .brand .brand-logo { width: 44px; height: 44px; }
-  .brand span { min-width: 0; overflow: hidden; }
-  .brand span small { font-size: .6rem; letter-spacing: .1em; }
+/* Cabeçalho: recolhe para o menu mobile mais cedo, antes que os links
+   ("Portal da Transparência" etc.) fiquem espremidos e quebrem linha. */
+@media (max-width: 1200px) {
   .nav-links {
     position: fixed; inset: var(--header-h) 0 auto 0; background: var(--creme-2);
     flex-direction: column; align-items: stretch; padding: 14px; gap: 2px;
     box-shadow: var(--sombra-lg); transform: translateY(-120%); transition: transform .3s; max-height: calc(100vh - var(--header-h)); overflow-y: auto;
   }
   .nav-links.open { transform: translateY(0); }
-  .nav-links a { padding: 13px 14px; font-size: 1rem; }
+  .nav-links a { padding: 13px 14px; font-size: 1rem; white-space: normal; }
   .dropdown > .submenu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; background: var(--creme); margin: 4px 0 8px; min-width: auto; }
   .menu-toggle { display: block; }
   .nav-cta .btn { display: none; }
+}
+@media (max-width: 760px) {
+  .brand { font-size: 1.05rem; gap: 10px; min-width: 0; flex: 1; }
+  .brand .brand-logo { width: 44px; height: 44px; }
+  .brand span { min-width: 0; overflow: hidden; }
+  .brand span small { font-size: .6rem; letter-spacing: .1em; }
   .section { padding: 60px 0; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr 1fr; }
