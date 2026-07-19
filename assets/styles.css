@@ -78,9 +78,24 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .section--vermelho .eyebrow, .section--carvao .eyebrow { color: var(--dourado); }
 
 .section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: .3em; }
-.section-lead { font-size: 1.15rem; color: var(--cinza); max-width: 60ch; }
-.section--vermelho .section-lead, .section--carvao .section-lead { color: rgba(255,255,255,.85); }
-.section--vermelho .lead-block { color: rgba(255,255,255,.88); }
+
+/* Parágrafos de conteúdo (uniformizados): mesma cor, tamanho e espaçamento
+   entre letras/linhas, em alinhamento justificado. Aplicado via .lead-block,
+   .section-lead (que ainda define a largura máxima de leitura) e .corpo-texto
+   (parágrafos de texto corrido sem classe própria). */
+.lead-block, .section-lead, .corpo-texto {
+  font-size: 1.08rem;
+  line-height: 1.75;
+  letter-spacing: 0;
+  color: var(--cinza);
+  text-align: justify;
+  -webkit-hyphens: none;
+  hyphens: none;
+}
+.section-lead { max-width: 60ch; }
+.section--vermelho .section-lead, .section--carvao .section-lead,
+.section--vermelho .lead-block, .section--carvao .lead-block,
+.section--vermelho .corpo-texto, .section--carvao .corpo-texto { color: rgba(255,255,255,.88); }
 .text-center { text-align: center; }
 .mx-auto { margin-inline: auto; }
 
@@ -298,7 +313,6 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 
 /* utilitários */
 .mt-0{margin-top:0}.mb-0{margin-bottom:0}.mt-24{margin-top:24px}.mt-32{margin-top:32px}.mt-40{margin-top:40px}
-.lead-block{font-size:1.18rem;color:var(--cinza)}
 .divider{height:1px;background:rgba(26,21,20,.1);margin:44px 0}
 
 /* =========================================================
@@ -335,9 +349,10 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .hl-slide--ph { background-image: linear-gradient(135deg,#A12A24,#7C1C18 60%,#5A1310); }
 .hl-ph { font-family:var(--fonte-titulo); font-weight:700; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.5); }
 .hl-slide--claro .hl-ph { color:rgba(26,21,20,.4); }
+/* Sem véu colorido sobre a foto: só um leve degradê no rodapé (onde fica o texto)
+   para manter a legibilidade, sem cobrir a imagem com uma película translúcida. */
 .hl-overlay { position:absolute; inset:0; z-index:1; pointer-events:none; background:
-  linear-gradient(0deg, rgba(20,8,8,.82) 0%, rgba(20,8,8,.10) 55%, rgba(20,8,8,.30) 100%),
-  rgba(161,42,36,.50); }
+  linear-gradient(0deg, rgba(10,4,4,.70) 0%, rgba(10,4,4,.32) 32%, rgba(10,4,4,0) 60%); }
 .hl-nav { position:absolute; top:50%; transform:translateY(-50%); z-index:3; width:48px; height:48px; border-radius:50%; border:none; background:rgba(255,255,255,.85); color:var(--carvao); font-family:var(--fonte-titulo); font-size:1.9rem; line-height:0; cursor:pointer; display:grid; place-items:center; transition:background .2s; }
 .hl-nav:hover { background:#fff; }
 .hl-prev { left:18px; } .hl-next { right:18px; }
@@ -351,11 +366,11 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
    (script.js) com base no maior conteúdo entre todos os slides. */
 .highlight .container { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 70px 24px 56px; width: 100%; }
 .highlight .kicker { display:inline-block; background: var(--dourado); color: var(--carvao); font-family: var(--fonte-titulo); font-weight: 800; font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; padding: 6px 14px; border-radius: 6px; margin-bottom: 18px; }
-.highlight h1 { font-family: var(--fonte-display); font-weight: var(--peso-display); font-size: clamp(1.7rem, 3.6vw, 3rem); line-height: 1.08; text-transform: uppercase; letter-spacing: .04em; max-width: 20ch; margin-bottom: 18px; }
-.highlight p { font-size: clamp(1.05rem,2vw,1.35rem); max-width: 60ch; color: rgba(255,255,255,.92); margin-bottom: 28px; }
+.highlight h1 { font-family: var(--fonte-display); font-weight: var(--peso-display); font-size: clamp(1.4rem, 3vw, 2.5rem); line-height: 1.1; text-transform: uppercase; letter-spacing: .04em; max-width: 20ch; margin-bottom: 18px; }
+.highlight p { font-size: clamp(.95rem,1.7vw,1.15rem); max-width: 60ch; color: rgba(255,255,255,.92); margin-bottom: 28px; }
 .highlight-actions { display: flex; flex-wrap: wrap; gap: 14px; }
 /* Título de notícia exibido nos slides do carrossel da hero */
-.highlight .hl-news-title { font-family: var(--fonte-titulo); font-weight: 700; font-size: clamp(1.7rem,3.6vw,3rem); line-height: 1.28; text-transform: uppercase; letter-spacing: .02em; max-width: 24ch; margin-bottom: 22px; }
+.highlight .hl-news-title { font-family: var(--fonte-titulo); font-weight: 700; font-size: clamp(1.4rem,3vw,2.5rem); line-height: 1.3; text-transform: uppercase; letter-spacing: .02em; max-width: 24ch; margin-bottom: 22px; }
 /* Desloca o texto da hero ~80px à esquerda no desktop para não cobrir rostos da foto de fundo */
 @media (min-width: 961px) { .highlight .container { transform: translateX(-80px); } }
 
@@ -420,8 +435,8 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 
 /* selo / badge */
 .badge-row { display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
-.badge { background:#fff; border:1px solid rgba(26,21,20,.1); border-radius:12px; padding:14px 18px; font-weight:700; font-family:var(--fonte-titulo); box-shadow:var(--sombra-sm); display:flex; align-items:center; gap:10px; font-size:.9rem; }
-.badge .yr { color: var(--vermelho); }
+.badge { background:#fff; border:1px solid rgba(26,21,20,.1); border-radius:12px; padding:14px 18px; font-weight:700; font-family:var(--fonte-titulo); box-shadow:var(--sombra-sm); display:flex; align-items:center; gap:10px; font-size:.9rem; color: var(--vermelho-escuro); }
+.badge .yr { color: var(--vermelho-escuro); }
 
 /* logos parceiros */
 .logos { display:grid; grid-template-columns: repeat(4,1fr); gap:18px; }
@@ -493,3 +508,31 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .noticia-corpo figure img { width: 100%; border-radius: var(--raio); display: block; }
 .noticia-corpo figcaption { font-size: .85rem; color: var(--cinza-claro); text-align: center; margin-top: 8px; }
 .noticia-voltar { margin-top: 36px; }
+
+/* Equipe & Governança em destaque na página inicial (versão ampliada) */
+#equipe .eyebrow { font-size: 1.5rem; letter-spacing: .06em; margin-bottom: 20px; }
+#equipe .people { gap: 28px; }
+#equipe .person { padding: 28px 20px; }
+#equipe .avatar { width: 84px; height: 84px; font-size: 1.4rem; }
+#equipe .person strong { font-size: 1.05rem; }
+/* A frase final da seção não deve ficar mais estreita que os parágrafos acima:
+   remove o max-width padrão de .section-lead para ocupar a mesma largura. */
+#equipe .section-lead { max-width: none; }
+/* Todos os parágrafos da seção (lead-block, corpo-texto, section-lead) usam
+   o mesmo tamanho/cor/espaçamento definidos globalmente — sem sobrescrever aqui,
+   para não gerar diferença de fonte entre os parágrafos da seção. */
+
+/* ---------- Alternância de cores da página inicial (vermelho escuro / branco) ----------
+   Variante usada apenas na home, para não alterar o vermelho (--vermelho) já usado
+   em .section--vermelho nas demais páginas do site. */
+.section--vermelho-escuro { background: var(--vermelho-escuro); color: var(--creme-2); }
+.section--vermelho-escuro .eyebrow { color: var(--dourado); }
+.section--vermelho-escuro .section-lead,
+.section--vermelho-escuro .lead-block,
+.section--vermelho-escuro .corpo-texto { color: rgba(255,255,255,.88); }
+
+/* Variante clara da faixa de doação, para caber na alternância vermelho escuro/branco */
+.donate-band--claro { background: #fff; color: var(--carvao); }
+.donate-band--claro::before { color: rgba(124,28,24,.08); }
+.donate-band--claro h2 { color: var(--vermelho-escuro); }
+.donate-band--claro .btn--ghost { color: var(--vermelho-escuro); border-color: var(--vermelho-escuro); }
