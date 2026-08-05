@@ -545,3 +545,14 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .donate-band--claro::before { color: rgba(124,28,24,.08); }
 .donate-band--claro h2 { color: var(--vermelho-escuro); }
 .donate-band--claro .btn--ghost { color: var(--vermelho-escuro); border-color: var(--vermelho-escuro); }
+
+/* Conteúdo mantido no DOM apenas como fonte de dados para scripts
+   (ex.: cartões de notícias que alimentam o carrossel da home). */
+.oculto { display: none !important; }
+
+/* Âncoras (#historia, #premios, #missao-visao-valores, #equipe, #parceiros):
+   o cabeçalho é sticky, então reservamos a altura dele para o título da seção
+   não ficar escondido atrás do menu ao chegar pelo link. */
+section[id], [id].section, .donate-band[id] {
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
