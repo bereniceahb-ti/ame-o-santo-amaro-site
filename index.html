@@ -57,17 +57,14 @@
   </nav>
 </header>
 
-<!-- ===== HERO DE DESTAQUE (carrossel automático) ===== -->
-<section class="highlight" aria-label="Destaques">
+<!-- ===== HERO DE DESTAQUE (imagem única, estática) =====
+     A pedido da presidencia, o hero deixou de ser carrossel: exibe apenas a
+     foto institucional, sem rotacao automatica, sem setas e sem indicadores. -->
+<section class="highlight" aria-label="Destaque institucional">
   <div class="hl-bg" aria-hidden="true">
-    <!-- Slide 1: institucional (fixo). Os slides seguintes são gerados via JS a partir
-         da seção "Notícias e novidades" abaixo — publicar uma notícia nova já a inclui aqui. -->
     <div class="hl-slide is-active" style="background-image:url('assets/img/foto-equipe-santo-amaro.jpg.jpeg');background-color:#C7702E;"></div>
   </div>
   <div class="hl-overlay" aria-hidden="true"></div>
-
-  <button class="hl-nav hl-prev" type="button" aria-label="Imagem anterior">‹</button>
-  <button class="hl-nav hl-next" type="button" aria-label="Próxima imagem">›</button>
 
   <div class="container">
     <span class="kicker">Instituto de Direitos Humanos</span>
@@ -77,9 +74,6 @@
       <a class="btn btn--ghost btn--lg" href="acoes.html">Conheça nosso trabalho</a>
     </div>
   </div>
-
-  <!-- Os indicadores (dots) são gerados via JS conforme o número de slides. -->
-  <div class="hl-dots" aria-label="Selecionar imagem"></div>
 </section>
 
 <!-- ===== NOSSA HISTÓRIA ===== -->
@@ -209,45 +203,6 @@
     <p style="font-size:.9rem;color:rgba(255,255,255,.7);margin-top:20px">Também atuamos em rede com CRAS, CREAS e o programa Espanhol Agora. <em>Confirmar logos oficiais e novos parceiros com a ONG.</em></p>
   </div>
 </section>
-
-<!-- ===== FONTE (OCULTA) DAS NOTÍCIAS DO CARROSSEL =====
-     A seção visível de "Notícias" foi retirada da página inicial.
-     Estes cartões permanecem apenas como fonte de dados: o carrossel do topo
-     (assets/script.js) e o preenchimento pelo CMS (assets/sanity-news.js,
-     seletor [data-noticias-home]) leem os .news-card daqui.
-     NÃO são exibidos na página. Para ver as notícias: noticias.html -->
-<div class="oculto" aria-hidden="true" data-noticias-home>
-      <article class="news-card">
-        <div class="thumb"><img src="assets/img/doacao-alimentos.avif" alt="Senhora carregando alimentos na cabeça durante a doação de cestas básicas" style="width:100%;height:100%;object-fit:cover;display:block"></div>
-        <div class="body">
-          <div class="meta"><span>Comunicação</span><span>★ Destaque</span></div>
-          <h3>Campanha natalina entrega cestas básicas a famílias assistidas</h3>
-          <p>Desde 2022, realizamos campanhas anuais para garantir uma ceia digna às famílias do território. <em>Conteúdo a confirmar com a ONG.</em></p>
-          <a class="card-link" href="noticias.html">Ler mais →</a>
-        </div>
-      </article>
-
-      <article class="news-card">
-        <div class="thumb"><div class="img-ph">FOTO<span class="ph-mini">imagem a inserir</span></div></div>
-        <div class="body">
-          <div class="meta"><span>Ame Ser</span><span>Direitos</span></div>
-          <h3>AME no World Youth Festival 2024 articula lideranças do mundo</h3>
-          <p>Levamos a voz da favela para o debate internacional de direitos humanos e juventude. <em>Conteúdo a confirmar com a ONG.</em></p>
-          <a class="card-link" href="noticias.html">Ler mais →</a>
-        </div>
-      </article>
-
-      <article class="news-card">
-        <div class="thumb"><div class="img-ph">FOTO<span class="ph-mini">imagem a inserir</span></div></div>
-        <div class="body">
-          <div class="meta"><span>Observatório</span><span>Pesquisa</span></div>
-          <h3>Nova sistematização de dados do Morro Santo Amaro é publicada</h3>
-          <p>O Observatório reúne dados socioeconômicos e cartográficos para fortalecer a comunidade. <em>Conteúdo a confirmar com a ONG.</em></p>
-          <a class="card-link" href="noticias.html">Ler mais →</a>
-        </div>
-      </article>
-
-</div>
 
 <!-- ===== RODAPÉ ===== -->
 <footer class="site-footer">
