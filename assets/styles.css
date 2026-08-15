@@ -28,7 +28,10 @@
   --raio: 18px;
   --raio-sm: 10px;
   --container: 1180px;
-  --header-h: 76px;
+  /* Container mais largo, usado só no cabeçalho, para reduzir o espaço vazio
+     nas laterais em telas largas (o resto do site continua em --container). */
+  --container-header: 1560px;
+  --header-h: 92px;
 
   --fonte-display: 'Archivo', system-ui, sans-serif;
   --peso-display: 750;
@@ -135,29 +138,32 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,.12);
 }
-.site-header .container { padding-inline: 16px; }
+/* Cabeçalho usa um container mais largo que o resto do site (--container-header
+   em vez de --container) e padding lateral maior que o "16px" antigo, pra
+   sobrar bem menos espaço vazio nas bordas em telas largas. */
+.site-header .container { max-width: var(--container-header); padding-inline: 32px; }
 .nav {
   height: var(--header-h);
-  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  display: flex; align-items: center; justify-content: space-between; gap: 26px;
 }
-.brand { display: flex; align-items: center; gap: 14px; font-family: var(--fonte-display); font-weight: var(--peso-display); font-size: 1.5rem; color: #fff; letter-spacing: .02em; }
+.brand { display: flex; align-items: center; gap: 16px; font-family: var(--fonte-display); font-weight: var(--peso-display); font-size: 1.85rem; color: #fff; letter-spacing: .02em; }
 .brand .heart {
-  width: 42px; height: 42px; flex: none;
+  width: 50px; height: 50px; flex: none;
   background: var(--vermelho); border-radius: 50%;
-  display: grid; place-items: center; color: #fff; font-family: var(--fonte-display); font-weight: var(--peso-display); font-size: .85rem;
+  display: grid; place-items: center; color: #fff; font-family: var(--fonte-display); font-weight: var(--peso-display); font-size: 1rem;
 }
 .brand .brand-logo {
-  width: 50px; height: 50px; flex: none;
+  width: 60px; height: 60px; flex: none;
   object-fit: contain; border-radius: 10px;
 }
 .footer-brand .brand .brand-logo { background: rgba(255,255,255,.06); padding: 4px; }
-.brand span small { display: block; font-family: var(--fonte-texto); font-weight: 600; font-size: .64rem; letter-spacing: .06em; color: rgba(255,255,255,.78); white-space: nowrap; }
+.brand span small { display: block; font-family: var(--fonte-texto); font-weight: 600; font-size: .74rem; letter-spacing: .06em; color: rgba(255,255,255,.78); white-space: nowrap; }
 
-.nav-links { display: flex; align-items: center; gap: 0; list-style: none; margin: 0; padding: 0; }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
 .nav-links > li { position: relative; }
 .nav-links a {
-  font-family: var(--fonte-titulo); font-weight: 600; font-size: .88rem;
-  color: #fff; padding: 10px 9px; border-radius: 10px; display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--fonte-titulo); font-weight: 700; font-size: 1.02rem;
+  color: #fff; padding: 12px 15px; border-radius: 10px; display: inline-flex; align-items: center; gap: 5px;
   white-space: nowrap;
 }
 .nav-links a:hover, .nav-links a.active { color: var(--creme); background: rgba(255,255,255,.14); }
@@ -165,17 +171,17 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .dropdown > .submenu {
   position: absolute; top: calc(100% + 8px); left: 0;
   background: #fff; border-radius: 14px; box-shadow: var(--sombra-lg);
-  padding: 10px; min-width: 280px; list-style: none; margin: 0;
+  padding: 10px; min-width: 300px; list-style: none; margin: 0;
   opacity: 0; visibility: hidden; transform: translateY(8px); transition: all .2s;
   border: 1px solid rgba(26,21,20,.06);
 }
 .dropdown:hover > .submenu, .dropdown:focus-within > .submenu { opacity: 1; visibility: visible; transform: translateY(0); }
-.submenu a { display: block; padding: 11px 14px; border-radius: 10px; font-size: .92rem; color: var(--carvao); }
-.submenu a small { display: block; font-family: var(--fonte-texto); font-weight: 400; font-size: .78rem; color: var(--cinza-claro); margin-top: 1px; }
+.submenu a { display: block; padding: 12px 15px; border-radius: 10px; font-size: .96rem; color: var(--carvao); }
+.submenu a small { display: block; font-family: var(--fonte-texto); font-weight: 400; font-size: .8rem; color: var(--cinza-claro); margin-top: 1px; }
 .submenu a:hover { background: var(--creme); color: var(--vermelho-escuro); }
 
-.nav-cta { display: flex; align-items: center; gap: 10px; }
-.site-header .btn--primary { background: #fff; color: var(--vermelho-escuro); box-shadow: 0 4px 14px rgba(0,0,0,.22); }
+.nav-cta { display: flex; align-items: center; gap: 14px; }
+.site-header .btn--primary { background: #fff; color: var(--vermelho-escuro); box-shadow: 0 4px 14px rgba(0,0,0,.22); padding: 15px 32px; font-size: 1.02rem; }
 .site-header .btn--primary:hover { background: var(--creme); color: var(--vermelho-escuro); }
 .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
 .menu-toggle span { display: block; width: 26px; height: 3px; background: #fff; border-radius: 3px; margin: 5px 0; transition: .3s; }
@@ -469,8 +475,10 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 /* Cabeçalho: recolhe para o menu mobile mais cedo, antes que os links
-   ("Portal da Transparência" etc.) fiquem espremidos e quebrem linha. */
-@media (max-width: 1200px) {
+   ("Portal da Transparência" etc.) fiquem espremidos e quebrem linha.
+   Breakpoint subiu de 1200 para 1360px porque os links do menu ficaram
+   maiores (fonte e padding aumentados) e passam a precisar de mais espaço. */
+@media (max-width: 1360px) {
   .nav-links {
     position: fixed; inset: var(--header-h) 0 auto 0; background: var(--creme-2);
     flex-direction: column; align-items: stretch; padding: 14px; gap: 2px;
