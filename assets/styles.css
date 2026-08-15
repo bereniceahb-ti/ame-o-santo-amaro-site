@@ -346,8 +346,17 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 @media (max-width: 760px) { .topbar .tb-left .item.hide-sm { display: none; } }
 
 /* Hero de destaque (manchete estilo Ibase) */
+/* Altura = tela cheia menos o header (que fica sticky por cima), para o hero
+   preencher toda a área visível ao carregar a página, sem "vazar" um pedaço
+   da próxima seção. min-height (não height fixo) garante que, se o texto do
+   hero for maior que a tela em telas muito baixas, a seção cresce em vez de
+   cortar o conteúdo. max() com 480px evita que fique baixo demais em
+   celulares na horizontal. */
 .highlight {
-  position: relative; min-height: 560px; display: flex; align-items: flex-end;
+  position: relative;
+  min-height: max(480px, calc(100vh - var(--header-h)));
+  min-height: max(480px, calc(100dvh - var(--header-h)));
+  display: flex; align-items: flex-end;
   color: #fff; background: linear-gradient(160deg,#7C1C18,#A12A24 60%,#BE3A33);
   overflow: hidden;
 }
