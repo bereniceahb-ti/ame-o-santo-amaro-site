@@ -110,6 +110,11 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
    título e parágrafos justificados, cor uniforme em preto. */
 .escola-texto .section-title,
 .escola-texto p { text-align: justify; color: var(--carvao); }
+
+/* Página Tribunal da Terra: mesmo padrão da Escola Luam Pessoa —
+   título e parágrafos justificados, cor uniforme em preto. */
+.tribunal-texto .section-title,
+.tribunal-texto p { text-align: justify; color: var(--carvao); }
 .mx-auto { margin-inline: auto; }
 
 /* ---------- Botões ---------- */
