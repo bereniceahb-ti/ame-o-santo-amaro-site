@@ -307,7 +307,7 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 /* ---------- Formulário ---------- */
 .form { display: grid; gap: 16px; }
 .form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form label { font-weight: 600; font-size: .9rem; display: block; margin-bottom: 6px; }
+.form label { font-weight: 600; font-size: 1rem; display: block; margin-bottom: 8px; color: var(--carvao); }
 .form input, .form textarea, .form select {
   width: 100%; padding: 13px 15px; border-radius: var(--raio-sm); border: 1.5px solid rgba(26,21,20,.15);
   font-family: inherit; font-size: 1rem; background: #fff; transition: border .2s;
