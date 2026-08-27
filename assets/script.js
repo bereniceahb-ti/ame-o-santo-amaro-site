@@ -28,7 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Formulários (envio real via Web3Forms)
+  // Formulários (envio real via Google Apps Script -> Gmail da AME)
+  // URL do "App da Web" publicado no Google Apps Script (script.google.com).
+  // Se precisar recriar o script, atualize essa URL depois de reimplantar.
+  var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzHO544mPzloGz1tcz_2yfDQrfsLfGmsZT4Da5PlQCd02b00IDH8HPf22tI2es1VCjP/exec';
+
   document.querySelectorAll('form[data-web3forms]').forEach(function (f) {
     var msgOk = f.querySelector('.form-msg:not(.form-msg--error)');
     var msgErro = f.querySelector('.form-msg--error');
@@ -42,10 +46,20 @@ document.addEventListener('DOMContentLoaded', function () {
       var textoOriginal = btn ? btn.textContent : '';
       if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
 
-      fetch('https://api.web3forms.com/submit', {
+      var dados = new FormData(f);
+
+      // Campo extra (ex: "Quero contribuir com" em Como Ajudar) não é lido
+      // pelo script — anexa o valor na mensagem pra não perder a informação.
+      var tipoContribuicao = dados.get('tipo_contribuicao');
+      if (tipoContribuicao) {
+        var mensagemAtual = dados.get('message') || '';
+        dados.set('message', 'Quero contribuir com: ' + tipoContribuicao + '\n\n' + mensagemAtual);
+      }
+
+      fetch(FORM_ENDPOINT, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
-        body: new FormData(f)
+        body: dados
       })
         .then(function (res) { return res.json(); })
         .then(function (data) {
