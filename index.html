@@ -244,12 +244,17 @@
       </div>
       <div>
         <h4>Fale Conosco</h4>
-        <form class="footer-form" data-demo>
-          <input type="text" placeholder="Seu nome" required>
-          <input type="email" placeholder="Seu e-mail" required>
-          <textarea rows="3" placeholder="Sua mensagem" required></textarea>
+        <form class="footer-form" data-web3forms>
+          <input type="hidden" name="access_key" value="fd07fcd4-9712-4ff2-8b1c-420a32ffea42">
+          <input type="hidden" name="subject" value="Novo contato pelo site — Rodapé (Home)">
+          <input type="hidden" name="from_name" value="Site institutoameosantoamaro.org.br">
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="text" name="name" placeholder="Seu nome" required>
+          <input type="email" name="email" placeholder="Seu e-mail" required>
+          <textarea rows="3" name="message" placeholder="Sua mensagem" required></textarea>
           <button class="btn btn--gold" type="submit" style="width:100%">Enviar</button>
-          <p class="form-msg">Mensagem enviada! (demonstração)</p>
+          <p class="form-msg">Mensagem enviada!</p>
+          <p class="form-msg form-msg--error">Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp.</p>
         </form>
       </div>
     </div>

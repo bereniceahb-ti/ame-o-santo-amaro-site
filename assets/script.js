@@ -28,13 +28,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Formulários de demonstração (protótipo, sem back-end)
-  document.querySelectorAll('form[data-demo]').forEach(function (f) {
+  // Formulários (envio real via Web3Forms)
+  document.querySelectorAll('form[data-web3forms]').forEach(function (f) {
+    var msgOk = f.querySelector('.form-msg:not(.form-msg--error)');
+    var msgErro = f.querySelector('.form-msg--error');
+    var btn = f.querySelector('button[type="submit"]');
+
     f.addEventListener('submit', function (e) {
       e.preventDefault();
-      var msg = f.querySelector('.form-msg');
-      if (msg) { msg.style.display = 'block'; }
-      f.reset();
+      if (msgOk) { msgOk.style.display = 'none'; }
+      if (msgErro) { msgErro.style.display = 'none'; }
+
+      var textoOriginal = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(f)
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data && data.success) {
+            f.reset();
+            if (msgOk) { msgOk.style.display = 'block'; }
+          } else if (msgErro) {
+            msgErro.style.display = 'block';
+          }
+        })
+        .catch(function () {
+          if (msgErro) { msgErro.style.display = 'block'; }
+        })
+        .finally(function () {
+          if (btn) { btn.disabled = false; btn.textContent = textoOriginal; }
+        });
     });
   });
 
