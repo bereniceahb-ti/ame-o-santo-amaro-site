@@ -264,6 +264,8 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 .split.reverse > :first-child { order: 2; }
 .media-frame { border-radius: var(--raio); overflow: hidden; box-shadow: var(--sombra-md); aspect-ratio: 4/3; background: var(--creme); }
 .media-frame img { width: 100%; height: 100%; object-fit: cover; }
+.media-frame.media-frame--wide { aspect-ratio: 3/1; }
+.media-frame.media-frame--wide img { object-fit: cover; object-position: center 30%; }
 
 /* cronograma de atividades (imagem completa, sem corte) */
 .cronograma-wrap { display: flex; justify-content: center; }
