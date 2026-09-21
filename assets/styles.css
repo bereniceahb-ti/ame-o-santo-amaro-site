@@ -659,3 +659,7 @@ section[id], [id].section, .donate-band[id] {
 .gallery.gallery--3 .g-item { aspect-ratio: 4/3; }
 @media (max-width:760px){ .gallery.gallery--3 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .section-title[style*="nowrap"] { white-space: normal !important; } }
+/* Logo branca (ex.: DataLabe) precisa de fundo escuro para aparecer */
+#parceiros .logo-box.logo-box--escuro { background: var(--carvao); }
+#parceiros .logo-box.logo-box--forum { background: #1B2C4E; padding: 4px; }
+#parceiros .logo-box.logo-box--forum img { max-height: 78px; }
