@@ -243,6 +243,80 @@
       '</div></article>';
   }
 
+  // Variante "cards com capa" (usada no Observatório: data-estilo="capa").
+  // Cada pesquisa aparece como um quadrado com capa, título e botão.
+  // Sem capa cadastrada no Sanity: se houver PDF, a capa é gerada a partir
+  // da 1ª página do PDF (pdf.js); se não der, mostra uma capa tipográfica.
+  function cartaoPublicacaoCapaHTML(p) {
+    var link = p.arquivoUrl || p.linkExterno;
+    var src = urlImagem(p.capaRef, { w: 800, h: 600 });
+    var capa = src
+      ? '<img src="' + src + '" alt="' + escapaHTML(p.capaAlt || p.title) + '" loading="lazy">'
+      : '<div class="pub-capa-gerada"><small>' + escapaHTML(p.tipo || 'Publicação') +
+        '</small><b>' + escapaHTML(p.title) + '</b><small>Observatório do Santo Amaro</small></div>';
+    var abre = link ? '<a class="pub-capa" href="' + escapaHTML(link) + '" target="_blank" rel="noopener"' : '<div class="pub-capa"';
+    var fecha = link ? '</a>' : '</div>';
+    return '<article class="pub-card">' +
+      abre + (!src && p.arquivoUrl ? ' data-pdf-capa="' + escapaHTML(p.arquivoUrl) + '"' : '') +
+        ' aria-label="' + escapaHTML(p.title) + '">' + capa + fecha +
+      '<div class="pub-body">' +
+        '<div class="meta"><span>' + escapaHTML(p.tipo || 'Publicação') + '</span>' +
+          (formataData(p.date) ? '<span>' + formataData(p.date) + '</span>' : '') + '</div>' +
+        '<h3>' + escapaHTML(p.title) + '</h3>' +
+        (link ? '<a class="btn btn--primary" href="' + escapaHTML(link) +
+          '" target="_blank" rel="noopener">Acessar pesquisa &rarr;</a>' : '') +
+      '</div></article>';
+  }
+
+  var PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  var PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  var pdfjsPromessa = null;
+  function carregaPdfjs() {
+    if (window.pdfjsLib) { return Promise.resolve(window.pdfjsLib); }
+    if (pdfjsPromessa) { return pdfjsPromessa; }
+    pdfjsPromessa = new Promise(function (ok, erro) {
+      var sc = document.createElement('script');
+      sc.src = PDFJS_URL;
+      sc.onload = function () {
+        // O worker precisa vir da mesma origem: baixa o código e cria um blob.
+        fetch(PDFJS_WORKER).then(function (r) { return r.text(); }).then(function (codigo) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+            URL.createObjectURL(new Blob([codigo], { type: 'text/javascript' }));
+          ok(window.pdfjsLib);
+        }).catch(erro);
+      };
+      sc.onerror = erro;
+      document.head.appendChild(sc);
+    });
+    return pdfjsPromessa;
+  }
+
+  function geraCapasPdf(raiz) {
+    var alvos = raiz.querySelectorAll('[data-pdf-capa]');
+    if (!alvos.length) { return; }
+    carregaPdfjs().then(function (pdfjsLib) {
+      Array.prototype.forEach.call(alvos, function (el) {
+        pdfjsLib.getDocument({ url: el.getAttribute('data-pdf-capa') }).promise
+          .then(function (doc) { return doc.getPage(1); })
+          .then(function (pag) {
+            var base = pag.getViewport({ scale: 1 });
+            var vp = pag.getViewport({ scale: 800 / base.width });
+            var cv = document.createElement('canvas');
+            cv.width = vp.width; cv.height = vp.height;
+            return pag.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise
+              .then(function () {
+                var img = document.createElement('img');
+                img.src = cv.toDataURL('image/jpeg', 0.82);
+                img.alt = el.getAttribute('aria-label') || 'Capa da publicação';
+                el.innerHTML = '';
+                el.appendChild(img);
+              });
+          })
+          .catch(function () { /* mantém a capa tipográfica */ });
+      });
+    }).catch(function () { /* mantém a capa tipográfica */ });
+  }
+
   // ---- Cronograma de atividades (imagem mensal por núcleo) ------------
   var CAMPOS_CRONOGRAMA =
     '{_id,title,"mes":mesReferencia,' +
@@ -405,7 +479,12 @@
         buscaPublicacoes(nucleo, limiteAttr ? Number(limiteAttr) : null)
           .then(function (lista) {
             if (lista && lista.length) {
-              alvo.innerHTML = lista.map(cartaoPublicacaoHTML).join('');
+              if (alvo.getAttribute('data-estilo') === 'capa') {
+                alvo.innerHTML = lista.map(cartaoPublicacaoCapaHTML).join('');
+                geraCapasPdf(alvo);
+              } else {
+                alvo.innerHTML = lista.map(cartaoPublicacaoHTML).join('');
+              }
             } else {
               alvo.innerHTML = '<p class="noticias-vazio">Ainda não há publicações ' +
                 'cadastradas. Volte em breve.</p>';

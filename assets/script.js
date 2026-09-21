@@ -50,6 +50,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Campo extra (ex: "Quero contribuir com" em Como Ajudar) não é lido
       // pelo script — anexa o valor na mensagem pra não perder a informação.
+      // Campos "extra_*" (ex.: formulário de inscrição do Fundo 4 Silvas)
+      // também não são lidos pelo script: vão para o corpo da mensagem.
+      var extras = [];
+      f.querySelectorAll('[name^="extra_"]').forEach(function (campo) {
+        var rotulo = campo.getAttribute('data-rotulo') || campo.name.replace('extra_', '');
+        if (campo.value) { extras.push(rotulo + ': ' + campo.value); }
+      });
+      if (extras.length) {
+        dados.set('message', extras.join('\n') + '\n\n' + (dados.get('message') || ''));
+      }
+
       var tipoContribuicao = dados.get('tipo_contribuicao');
       if (tipoContribuicao) {
         var mensagemAtual = dados.get('message') || '';
@@ -120,6 +131,50 @@ document.addEventListener('DOMContentLoaded', function () {
       }, { threshold: 0.4 });
       nums.forEach(function (el) { obs.observe(el); });
     }
+  }
+
+  // Galerias de fotos: clique amplia a imagem (lightbox com setas/teclado)
+  var galerias = document.querySelectorAll('.gallery');
+  if (galerias.length) {
+    var lb = document.createElement('div');
+    lb.className = 'lightbox';
+    lb.setAttribute('role', 'dialog');
+    lb.setAttribute('aria-modal', 'true');
+    lb.innerHTML = '<button class="lb-close" aria-label="Fechar">&times;</button>' +
+      '<button class="lb-prev" aria-label="Foto anterior">&#8249;</button>' +
+      '<img alt=""><button class="lb-next" aria-label="Próxima foto">&#8250;</button>' +
+      '<p class="lb-cap"></p>';
+    document.body.appendChild(lb);
+    var lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+    var itens = [], atual = 0;
+    function mostra(i) {
+      atual = (i + itens.length) % itens.length;
+      var a = itens[atual], im = a.querySelector('img');
+      lbImg.src = a.getAttribute('href');
+      lbImg.alt = im ? im.alt : '';
+      lbCap.textContent = im ? im.alt : '';
+    }
+    function fecha() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+    galerias.forEach(function (g) {
+      var links = Array.prototype.slice.call(g.querySelectorAll('a.g-item'));
+      links.forEach(function (a, idx) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          itens = links; mostra(idx);
+          lb.classList.add('open'); document.body.style.overflow = 'hidden';
+        });
+      });
+    });
+    lb.querySelector('.lb-close').addEventListener('click', fecha);
+    lb.querySelector('.lb-prev').addEventListener('click', function () { mostra(atual - 1); });
+    lb.querySelector('.lb-next').addEventListener('click', function () { mostra(atual + 1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) { fecha(); } });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('open')) { return; }
+      if (e.key === 'Escape') { fecha(); }
+      if (e.key === 'ArrowLeft') { mostra(atual - 1); }
+      if (e.key === 'ArrowRight') { mostra(atual + 1); }
+    });
   }
 
   // O hero e uma imagem unica e estatica (sem carrossel): a foto vem do
