@@ -553,6 +553,9 @@ button[type="submit"]:disabled { opacity:.7; cursor:wait; }
 #equipe .person { padding: 28px 20px; }
 #equipe .avatar { width: 84px; height: 84px; font-size: 1.4rem; }
 #equipe .person strong { font-size: 1.05rem; }
+#equipe .avatar { width: 112px; height: 112px; }
+#equipe .avatar--foto { overflow: hidden; background: var(--cinza-claro, #ddd); box-shadow: 0 0 0 3px var(--vermelho); }
+#equipe .avatar--foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* A frase final da seção não deve ficar mais estreita que os parágrafos acima:
    remove o max-width padrão de .section-lead para ocupar a mesma largura. */
 #equipe .section-lead { max-width: none; }
