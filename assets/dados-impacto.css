@@ -1,0 +1,101 @@
+/* =========================================================
+   DADOS E IMPACTO — componentes das páginas de levantamento de dados
+   (Portal da Transparência). Usa os tokens de assets/styles.css.
+   Reaproveitável em futuros relatórios: basta usar as mesmas classes .di-*
+   ========================================================= */
+
+.page-hero .di-meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+.page-hero .di-meta span { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); border-radius:99px; padding:4px 12px; font-size:.85rem; color:#fff; }
+
+/* Faixa de destaques */
+.di-destaques { background:var(--vermelho-escuro); padding:32px 0 40px; }
+.di-kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+.di-kpi { background:#fff; border-radius:14px; padding:18px 18px 16px; display:flex; flex-direction:column; gap:4px; }
+.di-kpi .n { font-family:var(--fonte-display); font-weight:900; font-size:clamp(2.1rem,4vw,2.7rem); line-height:1; color:var(--vermelho); font-variant-numeric:tabular-nums; }
+.di-kpi .l { font-size:.95rem; font-weight:600; line-height:1.35; color:var(--carvao); }
+.di-kpi .s { font-size:.8rem; color:var(--cinza-claro); line-height:1.35; }
+.di-kpi--largo { grid-column:1/-1; }
+.di-pills { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+.di-pills span { background:var(--creme); color:var(--vermelho-escuro); font-weight:600; font-size:.88rem; border-radius:99px; padding:5px 12px; }
+.di-downloads { display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
+
+/* Sumário fixo */
+.di-sumario { position:sticky; top:var(--header-h); z-index:50; background:rgba(255,255,255,.97); backdrop-filter:blur(6px); border-bottom:1px solid #EADFE1; }
+.di-sumario nav { display:flex; gap:6px; overflow-x:auto; padding:10px 0; scrollbar-width:thin; }
+.di-sumario a { flex:none; color:var(--cinza); font-size:.86rem; font-weight:600; padding:6px 12px; border-radius:99px; border:1px solid #EADFE1; }
+.di-sumario a:hover, .di-sumario a:focus-visible { background:var(--creme); color:var(--vermelho-escuro); }
+
+/* Seções */
+.di-bloco { padding:64px 0; border-bottom:1px solid #EADFE1; scroll-margin-top:calc(var(--header-h) + 56px); }
+.di-bloco:nth-of-type(even) { background:var(--creme-2); }
+.di-bloco h2 { font-size:clamp(1.6rem,3vw,2.2rem); margin:6px 0 10px; }
+.di-bloco .di-lead { max-width:66ch; color:var(--cinza); margin:0 0 24px; }
+.di-duas { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:36px; align-items:start; }
+@media (max-width:860px){ .di-duas { grid-template-columns:1fr; } }
+.di-nota { font-size:.84rem; color:var(--cinza-claro); margin-top:12px; }
+.di-leitura { background:#fff; border-left:4px solid var(--vermelho); border-radius:0 12px 12px 0; padding:16px 18px; }
+.di-leitura b { display:block; font-family:var(--fonte-titulo); font-size:1.08rem; margin-bottom:4px; color:var(--carvao); }
+.di-leitura p { margin:0; color:var(--cinza); font-size:.96rem; }
+
+/* Alternância registros / pessoas */
+.di-toggle { display:inline-flex; background:#F1ECEC; border-radius:99px; padding:3px; margin-bottom:16px; }
+.di-toggle button { border:0; background:transparent; font:600 .84rem var(--fonte-texto); color:var(--cinza); padding:6px 14px; border-radius:99px; cursor:pointer; }
+.di-toggle button[aria-pressed="true"] { background:#fff; color:var(--vermelho-escuro); box-shadow:0 1px 4px rgba(26,21,20,.12); }
+.di-toggle button:focus-visible { outline:2px solid var(--vermelho); outline-offset:1px; }
+
+/* Gráfico de barras horizontais */
+.di-barras { display:flex; flex-direction:column; gap:10px; }
+.di-barras[hidden] { display:none; }
+.di-barra { display:grid; grid-template-columns:minmax(96px,160px) 1fr 96px; gap:12px; align-items:center; font-size:.92rem; }
+.di-barra .nome { font-weight:600; line-height:1.25; color:var(--carvao); }
+.di-barra .nome small { display:block; font-weight:500; font-size:.74rem; color:var(--cinza-claro); }
+.di-barra .trilho { height:14px; background:#F1ECEC; border-radius:4px; overflow:hidden; }
+.di-barra .fill { display:block; height:100%; background:var(--cinza-claro); border-radius:0 4px 4px 0; }
+.di-barra.dest .fill { background:var(--vermelho); }
+.di-barra .val { white-space:nowrap; text-align:right; font-variant-numeric:tabular-nums; color:var(--cinza); }
+.di-barra .val b { color:var(--carvao); }
+@media (max-width:480px){ .di-barra { grid-template-columns:1fr 100px; } .di-toggle button { padding:6px 10px; font-size:.78rem; } .di-barra .nome { grid-column:1/-1; } }
+
+/* Registros x pessoas */
+.di-split { display:flex; height:48px; border-radius:8px; overflow:hidden; gap:2px; margin:10px 0 8px; }
+.di-split div { display:flex; align-items:center; padding-inline:12px; color:#fff; font-weight:700; font-size:.92rem; white-space:nowrap; }
+.di-legenda { display:flex; flex-wrap:wrap; gap:16px; font-size:.86rem; color:var(--cinza); }
+.di-legenda i { display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-1px; margin-right:6px; }
+
+/* Gráfico de quadradinhos (1 quadrado = 1%) */
+.di-waffle { display:grid; grid-template-columns:repeat(10,1fr); gap:4px; max-width:340px; }
+.di-waffle i { aspect-ratio:1; border-radius:3px; background:#F1ECEC; }
+.di-waffle i.a { background:var(--vermelho); }
+.di-waffle i.b { background:#E9B8B5; }
+.di-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.di-chips span { font-size:.82rem; background:#fff; border:1px solid #EADFE1; border-radius:99px; padding:3px 10px; color:var(--cinza); }
+
+/* Cards de ação */
+.di-acoes { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+.di-acao { background:#fff; border:1px solid #EADFE1; border-radius:14px; padding:18px; }
+.di-acao .eixo { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--vermelho); }
+.di-acao h3 { font-size:1.12rem; margin:4px 0 12px; }
+.di-acao dl { display:grid; grid-template-columns:1fr auto; gap:6px 10px; margin:0; font-size:.88rem; }
+.di-acao dt { color:var(--cinza); }
+.di-acao dd { margin:0; font-weight:700; text-align:right; font-variant-numeric:tabular-nums; }
+.di-acao .mini { grid-column:1/-1; height:6px; background:#F1ECEC; border-radius:3px; overflow:hidden; }
+.di-acao .mini span { display:block; height:100%; background:var(--vermelho); }
+
+/* Eixos */
+.di-eixos { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+.di-eixo { background:#fff; border-radius:14px; padding:18px; border:1px solid #EADFE1; }
+.di-eixo h3 { font-size:1.06rem; margin-bottom:8px; color:var(--vermelho-escuro); }
+.di-eixo p { margin:0; font-size:.9rem; color:var(--cinza); }
+
+/* Metodologia */
+.di-bloco details { background:#fff; border:1px solid #EADFE1; border-radius:12px; margin-bottom:10px; }
+.di-bloco summary { cursor:pointer; padding:14px 18px; font-weight:700; font-family:var(--fonte-titulo); list-style:none; display:flex; justify-content:space-between; gap:12px; }
+.di-bloco summary::-webkit-details-marker { display:none; }
+.di-bloco summary::after { content:"+"; color:var(--vermelho); font-size:1.3rem; line-height:1; }
+.di-bloco details[open] summary::after { content:"–"; }
+.di-bloco details .corpo { padding:0 18px 16px; color:var(--cinza); font-size:.95rem; }
+.di-bloco details ul { margin:6px 0 0; padding-left:18px; }
+.di-lgpd { display:flex; gap:14px; align-items:flex-start; background:var(--creme); border-radius:14px; padding:18px; margin-top:18px; }
+.di-lgpd b { font-family:var(--fonte-titulo); }
+.di-lgpd p { margin:4px 0 0; font-size:.92rem; color:var(--cinza); }
+.di-escudo { flex:none; width:40px; height:40px; border-radius:10px; background:var(--vermelho); display:grid; place-items:center; }
