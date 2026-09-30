@@ -99,3 +99,13 @@
 .di-lgpd b { font-family:var(--fonte-titulo); }
 .di-lgpd p { margin:4px 0 0; font-size:.92rem; color:var(--cinza); }
 .di-escudo { flex:none; width:40px; height:40px; border-radius:10px; background:var(--vermelho); display:grid; place-items:center; }
+
+/* Ajuste 2026-09-30: textos justificados e colunas centralizadas na vertical */
+.page-hero p,
+.di-bloco .di-lead,
+.di-leitura p,
+.di-nota,
+.di-eixo p,
+.di-bloco details .corpo,
+.di-lgpd p { text-align: justify; }
+.di-duas { align-items: center; }
