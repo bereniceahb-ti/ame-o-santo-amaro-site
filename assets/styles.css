@@ -677,3 +677,14 @@ section[id], [id].section, .donate-band[id] {
 #parceiros .logo-box.logo-box--escuro { background: var(--carvao); }
 #parceiros .logo-box.logo-box--forum { background: #1B2C4E; padding: 4px; }
 #parceiros .logo-box.logo-box--forum img { max-height: 78px; }
+
+/* Dados e Impacto (transparencia.html) — título maior e cards por ano (2026-10-01) */
+#dados-e-impacto .eyebrow { font-size: 1.5rem; letter-spacing: .06em; margin-bottom: 14px; }
+.di-ano-card { display: flex; flex-direction: column; }
+.di-ano-card .di-ano { font-family: var(--fonte-display); font-weight: 900; font-size: 2.6rem; line-height: 1; color: var(--vermelho); margin-bottom: 10px; }
+.di-ano-card > p { margin: 0 0 14px; }
+.di-ano-lista { list-style: none; margin: 0; padding: 0; border-top: 1px solid #EADFE1; }
+.di-ano-lista li { border-bottom: 1px solid #EADFE1; }
+.di-ano-lista a { display: flex; justify-content: space-between; gap: 10px; padding: 11px 2px; font-weight: 600; font-size: .95rem; line-height: 1.35; color: var(--carvao); }
+.di-ano-lista a::after { content: "→"; color: var(--vermelho); flex: none; }
+.di-ano-lista a:hover, .di-ano-lista a:focus-visible { color: var(--vermelho); }
