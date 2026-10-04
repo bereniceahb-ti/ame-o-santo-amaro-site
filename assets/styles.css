@@ -679,7 +679,7 @@ section[id], [id].section, .donate-band[id] {
 #parceiros .logo-box.logo-box--forum img { max-height: 78px; }
 
 /* Dados e Impacto (transparencia.html) — título maior e cards por ano (2026-10-01) */
-#dados-e-impacto .eyebrow { font-size: 1.5rem; letter-spacing: .06em; margin-bottom: 14px; }
+#dados-e-impacto .eyebrow, .secao-anos .eyebrow { font-size: 1.5rem; letter-spacing: .06em; margin-bottom: 14px; }
 .di-ano-card { display: flex; flex-direction: column; }
 .di-ano-card .di-ano { font-family: var(--fonte-display); font-weight: 900; font-size: 2.6rem; line-height: 1; color: var(--vermelho); margin-bottom: 10px; }
 .di-ano-card > p { margin: 0 0 14px; }
