@@ -125,3 +125,6 @@
 .di-mini { background:#fff; border:1px solid #EADFE1; border-radius:12px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; }
 .di-mini .n { font-family:var(--fonte-display); font-weight:900; font-size:1.6rem; line-height:1.05; color:var(--vermelho); font-variant-numeric:tabular-nums; }
 .di-mini .l { font-size:.86rem; font-weight:600; line-height:1.3; color:var(--carvao); }
+
+/* Ajuste 2026-10-05: tabelas de texto (sem números) alinhadas à esquerda */
+.di-tabela--texto th, .di-tabela--texto td { text-align:left !important; }
