@@ -556,6 +556,8 @@ button[type="submit"]:disabled { opacity:.7; cursor:wait; }
 .noticia-corpo figure { margin: 1.6em 0; }
 .noticia-corpo figure img { width: 100%; border-radius: var(--raio); display: block; }
 .noticia-corpo figcaption { font-size: .85rem; color: var(--cinza-claro); text-align: center; margin-top: 8px; }
+.noticia-galeria { margin: 2.4em 0 1em; }
+.noticia-galeria h2 { font-size: 1.5rem; margin: 0 0 16px; }
 .noticia-voltar { margin-top: 36px; }
 
 /* Equipe & Governança em destaque na página inicial (versão ampliada) */

@@ -133,10 +133,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Galerias de fotos: clique amplia a imagem (lightbox com setas/teclado)
-  var galerias = document.querySelectorAll('.gallery');
-  if (galerias.length) {
-    var lb = document.createElement('div');
+  // Galerias de fotos: clique amplia a imagem (lightbox com setas/teclado).
+  // Usa delegação de evento, então funciona também para galerias que chegam
+  // depois do carregamento (ex.: galeria das notícias vinda do Sanity).
+  var lb = null, lbImg, lbCap, itens = [], atual = 0;
+  function mostra(i) {
+    atual = (i + itens.length) % itens.length;
+    var a = itens[atual], im = a.querySelector('img');
+    lbImg.src = a.getAttribute('href');
+    lbImg.alt = im ? im.alt : '';
+    lbCap.textContent = im ? im.alt : '';
+  }
+  function fecha() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function criaLightbox() {
+    lb = document.createElement('div');
     lb.className = 'lightbox';
     lb.setAttribute('role', 'dialog');
     lb.setAttribute('aria-modal', 'true');
@@ -145,37 +155,27 @@ document.addEventListener('DOMContentLoaded', function () {
       '<img alt=""><button class="lb-next" aria-label="Próxima foto">&#8250;</button>' +
       '<p class="lb-cap"></p>';
     document.body.appendChild(lb);
-    var lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
-    var itens = [], atual = 0;
-    function mostra(i) {
-      atual = (i + itens.length) % itens.length;
-      var a = itens[atual], im = a.querySelector('img');
-      lbImg.src = a.getAttribute('href');
-      lbImg.alt = im ? im.alt : '';
-      lbCap.textContent = im ? im.alt : '';
-    }
-    function fecha() { lb.classList.remove('open'); document.body.style.overflow = ''; }
-    galerias.forEach(function (g) {
-      var links = Array.prototype.slice.call(g.querySelectorAll('a.g-item'));
-      links.forEach(function (a, idx) {
-        a.addEventListener('click', function (e) {
-          e.preventDefault();
-          itens = links; mostra(idx);
-          lb.classList.add('open'); document.body.style.overflow = 'hidden';
-        });
-      });
-    });
+    lbImg = lb.querySelector('img'); lbCap = lb.querySelector('.lb-cap');
     lb.querySelector('.lb-close').addEventListener('click', fecha);
     lb.querySelector('.lb-prev').addEventListener('click', function () { mostra(atual - 1); });
     lb.querySelector('.lb-next').addEventListener('click', function () { mostra(atual + 1); });
     lb.addEventListener('click', function (e) { if (e.target === lb) { fecha(); } });
-    document.addEventListener('keydown', function (e) {
-      if (!lb.classList.contains('open')) { return; }
-      if (e.key === 'Escape') { fecha(); }
-      if (e.key === 'ArrowLeft') { mostra(atual - 1); }
-      if (e.key === 'ArrowRight') { mostra(atual + 1); }
-    });
   }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('.gallery a.g-item') : null;
+    if (!a) { return; }
+    e.preventDefault();
+    if (!lb) { criaLightbox(); }
+    itens = Array.prototype.slice.call(a.closest('.gallery').querySelectorAll('a.g-item'));
+    mostra(itens.indexOf(a));
+    lb.classList.add('open'); document.body.style.overflow = 'hidden';
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!lb || !lb.classList.contains('open')) { return; }
+    if (e.key === 'Escape') { fecha(); }
+    if (e.key === 'ArrowLeft') { mostra(atual - 1); }
+    if (e.key === 'ArrowRight') { mostra(atual + 1); }
+  });
 
   // O hero e uma imagem unica e estatica (sem carrossel): a foto vem do
   // proprio HTML (.hl-slide.is-active), entao nao ha JS envolvido nele.

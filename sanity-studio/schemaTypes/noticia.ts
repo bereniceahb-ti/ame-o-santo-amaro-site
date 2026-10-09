@@ -145,6 +145,24 @@ export const noticia = defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'galeria',
+      title: 'Galeria de fotos',
+      description:
+        'Arraste várias fotos de uma vez para cá. Elas aparecem no fim da notícia em grade, e ampliam ao clicar. Arraste as fotos para mudar a ordem.',
+      type: 'array',
+      options: {layout: 'grid'},
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({name: 'caption', title: 'Legenda (opcional)', type: 'string'}),
+            defineField({name: 'alt', title: 'Descrição da imagem (acessibilidade)', type: 'string'}),
+          ],
+        }),
+      ],
+    }),
   ],
   orderings: [
     {

@@ -199,7 +199,8 @@
   function buscaPorSlug(slug) {
     var groq = '*[_type=="noticia" && slug.current==$slug][0]' +
       '{_id,title,summary,category,author,source,"date":publishedAt,' +
-      '"imgRef":coverImage.asset._ref,"imgAlt":coverImage.alt,body}';
+      '"imgRef":coverImage.asset._ref,"imgAlt":coverImage.alt,body,' +
+      '"galeria":galeria[]{"ref":asset._ref,alt,caption}}';
     return consulta(groq, { slug: slug });
   }
 
@@ -430,10 +431,28 @@
           (capa ? '<img class="noticia-capa" src="' + capa + '" alt="' +
             escapaHTML(n.imgAlt || n.title) + '">' : '') +
           '<div class="noticia-corpo">' + portableTextHTML(n.body) + '</div>' +
+          galeriaHTML(n.galeria, n.title) +
           '<p class="noticia-voltar"><a class="card-link" href="noticias.html">' +
             '&larr; Voltar para todas as notícias</a></p>' +
         '</div>';
     }).catch(function () { alvo.innerHTML = msgNaoEncontrada(); });
+  }
+
+  // Galeria de fotos da notícia (campo "galeria" do Sanity). Usa o mesmo
+  // visual .gallery dos núcleos; o clique amplia (lightbox em script.js).
+  function galeriaHTML(fotos, titulo) {
+    fotos = (fotos || []).filter(function (f) { return f && f.ref; });
+    if (!fotos.length) { return ''; }
+    var itens = fotos.map(function (f, i) {
+      var texto = f.caption || f.alt || (titulo + ' — foto ' + (i + 1));
+      return '<a class="g-item" href="' + urlImagem(f.ref, { w: 1600 }) + '">' +
+        '<img src="' + urlImagem(f.ref, { w: 600, h: 600 }) + '" alt="' +
+        escapaHTML(texto) + '" loading="lazy"></a>';
+    }).join('');
+    return '<section class="noticia-galeria">' +
+      '<h2>Galeria de fotos</h2>' +
+      '<div class="gallery gallery--3">' + itens + '</div>' +
+      '</section>';
   }
 
   function msgNaoEncontrada() {
