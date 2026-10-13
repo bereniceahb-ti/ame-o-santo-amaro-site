@@ -54,6 +54,12 @@
         <div class="row"><div><label>Nome</label><input type="text" name="name" required></div><div><label>E-mail</label><input type="email" name="email" required></div></div>
         <div><label>Assunto</label><input type="text" name="subject"></div>
         <div><label>Mensagem</label><textarea rows="5" name="message" required></textarea></div>
+        <div class="form-anexo">
+          <label for="anexos">Anexar arquivo <span class="form-opcional">(opcional)</span></label>
+          <p class="form-dica">Quer enviar uma publicação, texto, artigo ou foto para sair no site? Anexe aqui. Até 3 arquivos, 10 MB no total (PDF, Word, ODT, TXT, JPG, PNG ou WEBP).</p>
+          <input type="file" id="anexos" name="anexos" multiple accept=".pdf,.doc,.docx,.odt,.txt,.rtf,.jpg,.jpeg,.png,.webp" data-max-arquivos="3" data-max-mb="10">
+          <ul class="form-anexo-lista" aria-live="polite"></ul>
+        </div>
         <button class="btn btn--primary" type="submit">Enviar mensagem</button>
         <p class="form-msg">Mensagem enviada com sucesso!</p>
         <p class="form-msg form-msg--error">Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp.</p>

@@ -37,11 +37,68 @@ document.addEventListener('DOMContentLoaded', function () {
     var msgOk = f.querySelector('.form-msg:not(.form-msg--error)');
     var msgErro = f.querySelector('.form-msg--error');
     var btn = f.querySelector('button[type="submit"]');
+    var campoArquivo = f.querySelector('input[type="file"]');
+    var listaArquivos = f.querySelector('.form-anexo-lista');
+
+    function tamanhoLegivel(bytes) {
+      return bytes < 1024 * 1024 ? Math.max(1, Math.round(bytes / 1024)) + ' KB' : (bytes / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB';
+    }
+
+    // Confere quantidade/tamanho dos anexos. Devolve texto do erro ou ''.
+    function validaAnexos() {
+      if (!campoArquivo) { return ''; }
+      var arquivos = Array.prototype.slice.call(campoArquivo.files || []);
+      var maxArq = parseInt(campoArquivo.getAttribute('data-max-arquivos') || '3', 10);
+      var maxMb = parseFloat(campoArquivo.getAttribute('data-max-mb') || '10');
+      var total = arquivos.reduce(function (s, a) { return s + a.size; }, 0);
+      if (arquivos.length > maxArq) { return 'Envie no máximo ' + maxArq + ' arquivos.'; }
+      if (total > maxMb * 1024 * 1024) { return 'Os anexos passam de ' + maxMb + ' MB. Envie arquivos menores ou mande um link na mensagem.'; }
+      return '';
+    }
+
+    function mostraAnexos() {
+      if (!campoArquivo || !listaArquivos) { return; }
+      listaArquivos.innerHTML = '';
+      Array.prototype.forEach.call(campoArquivo.files || [], function (a) {
+        var li = document.createElement('li');
+        li.textContent = a.name + ' ';
+        var t = document.createElement('span');
+        t.textContent = tamanhoLegivel(a.size);
+        li.appendChild(t);
+        listaArquivos.appendChild(li);
+      });
+      var erro = validaAnexos();
+      if (erro) {
+        var liErro = document.createElement('li');
+        liErro.className = 'erro';
+        liErro.textContent = erro;
+        listaArquivos.appendChild(liErro);
+      }
+    }
+
+    // Lê um arquivo e devolve só o conteúdo em base64 (sem o prefixo data:)
+    function lerBase64(arquivo) {
+      return new Promise(function (ok, falha) {
+        var leitor = new FileReader();
+        leitor.onload = function () { ok(String(leitor.result).split(',')[1] || ''); };
+        leitor.onerror = function () { falha(leitor.error); };
+        leitor.readAsDataURL(arquivo);
+      });
+    }
+
+    if (campoArquivo) { campoArquivo.addEventListener('change', mostraAnexos); }
 
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       if (msgOk) { msgOk.style.display = 'none'; }
       if (msgErro) { msgErro.style.display = 'none'; }
+
+      var erroAnexo = validaAnexos();
+      if (erroAnexo) {
+        mostraAnexos();
+        if (campoArquivo) { campoArquivo.focus(); }
+        return;
+      }
 
       var textoOriginal = btn ? btn.textContent : '';
       if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
@@ -67,15 +124,42 @@ document.addEventListener('DOMContentLoaded', function () {
         dados.set('message', 'Quero contribuir com: ' + tipoContribuicao + '\n\n' + mensagemAtual);
       }
 
-      fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: dados
-      })
+      // Anexos: o Apps Script não recebe arquivo "cru", então cada arquivo
+      // vai em base64 nos campos anexo_nome_N / anexo_tipo_N / anexo_dados_N
+      // (o script remonta e anexa no e-mail). Com anexo, o envio vai como
+      // URLSearchParams, que o Apps Script lê de forma confiável.
+      var arquivos = campoArquivo ? Array.prototype.slice.call(campoArquivo.files || []) : [];
+      dados.delete('anexos');
+
+      var preparo = Promise.resolve(dados);
+      if (arquivos.length) {
+        if (btn) { btn.textContent = 'Enviando anexos...'; }
+        preparo = Promise.all(arquivos.map(lerBase64)).then(function (conteudos) {
+          var corpo = new URLSearchParams();
+          dados.forEach(function (valor, chave) { if (typeof valor === 'string') { corpo.append(chave, valor); } });
+          corpo.append('anexos_qtd', String(arquivos.length));
+          arquivos.forEach(function (a, i) {
+            corpo.append('anexo_nome_' + i, a.name);
+            corpo.append('anexo_tipo_' + i, a.type || 'application/octet-stream');
+            corpo.append('anexo_dados_' + i, conteudos[i]);
+          });
+          return corpo;
+        });
+      }
+
+      preparo
+        .then(function (corpo) {
+          return fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: corpo
+          });
+        })
         .then(function (res) { return res.json(); })
         .then(function (data) {
           if (data && data.success) {
             f.reset();
+            if (listaArquivos) { listaArquivos.innerHTML = ''; }
             if (msgOk) { msgOk.style.display = 'block'; }
           } else if (msgErro) {
             msgErro.style.display = 'block';
