@@ -128,3 +128,31 @@
 
 /* Ajuste 2026-10-05: tabelas de texto (sem números) alinhadas à esquerda */
 .di-tabela--texto th, .di-tabela--texto td { text-align:left !important; }
+
+/* Ajuste 2026-10-18: relatório Território que Aprende (Tribunal da Terra) — seções numeradas, mapa, prioridades */
+.di-largo { max-width:960px; }
+.di-secao { margin:28px 0 8px; scroll-margin-top:calc(var(--header-h) + 56px); }
+.di-secao:first-of-type { margin-top:18px; }
+.di-secao h3.di-sub { font-size:1.25rem; display:flex; gap:10px; align-items:baseline; }
+.di-num { color:var(--vermelho); font-family:var(--fonte-display); font-weight:900; }
+.di-secao .di-barras { margin:6px 0 18px; }
+.di-secao .di-split + .di-legenda { margin-bottom:16px; }
+.di-secao .di-leitura { margin:6px 0 16px; }
+.di-secao .di-eixos { margin:6px 0 16px; }
+.di-lista--uma { display:block; } .di-lista--uma li { margin-bottom:4px; }
+.di-callout--fecho { font-family:var(--fonte-titulo); font-weight:600; font-size:1.12rem; color:var(--vermelho-escuro); }
+.di-mapa-embed { position:relative; border-radius:14px; overflow:hidden; border:1px solid #EADFE1; aspect-ratio:16/10; margin:14px 0 12px; background:#F1ECEC; }
+.di-mapa-embed iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.di-mapa-cta { display:flex; flex-wrap:wrap; gap:14px 20px; align-items:center; justify-content:space-between; background:var(--vermelho); color:#fff; border-radius:14px; padding:18px 22px; margin:10px 0 16px; }
+.di-mapa-cta b { font-family:var(--fonte-titulo); font-size:1.08rem; }
+.di-mapa-cta p { margin:4px 0 0; color:rgba(255,255,255,.88); font-size:.94rem; }
+.di-mapa-cta .btn-mapa { flex:none; background:#fff; color:var(--vermelho-escuro); font-weight:700; padding:10px 18px; border-radius:99px; }
+.di-mapa-cta .btn-mapa:hover { background:var(--creme); }
+.di-prioridades { list-style:none; margin:6px 0 16px; padding:0; counter-reset:p; }
+.di-prioridades li { counter-increment:p; position:relative; padding:12px 0 12px 46px; border-bottom:1px solid #EADFE1; color:var(--cinza); text-align:justify; }
+.di-prioridades li b { color:var(--carvao); }
+.di-prioridades li::before { content:counter(p); position:absolute; left:0; top:10px; width:30px; height:30px; border-radius:50%; background:var(--vermelho); color:#fff; font:800 .95rem var(--fonte-display); display:grid; place-items:center; }
+#agentes details .corpo .di-texto { margin-bottom:6px; }
+#agentes .di-tabela th { white-space:normal; vertical-align:bottom; }
+#agentes .di-tabela td:first-child { white-space:nowrap; }
+@media (min-width:861px){ .di-kpis--3 { grid-template-columns:repeat(3,1fr); } }
