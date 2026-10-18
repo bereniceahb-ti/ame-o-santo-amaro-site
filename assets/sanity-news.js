@@ -495,18 +495,23 @@
         var nucleo = alvo.getAttribute('data-publicacoes-nucleo');
         if (!CONFIGURADO || !nucleo) { return; }
         var limiteAttr = alvo.getAttribute('data-limite');
+        // Itens fixos escritos direto no HTML (marcados com data-fixo) são
+        // preservados no topo da lista quando as publicações do Sanity chegam.
+        var fixos = '';
+        var elFixos = alvo.querySelectorAll('[data-fixo]');
+        for (var f = 0; f < elFixos.length; f++) { fixos += elFixos[f].outerHTML; }
         buscaPublicacoes(nucleo, limiteAttr ? Number(limiteAttr) : null)
           .then(function (lista) {
             if (lista && lista.length) {
               if (alvo.getAttribute('data-estilo') === 'capa') {
-                alvo.innerHTML = lista.map(cartaoPublicacaoCapaHTML).join('');
+                alvo.innerHTML = fixos + lista.map(cartaoPublicacaoCapaHTML).join('');
                 geraCapasPdf(alvo);
               } else {
-                alvo.innerHTML = lista.map(cartaoPublicacaoHTML).join('');
+                alvo.innerHTML = fixos + lista.map(cartaoPublicacaoHTML).join('');
               }
             } else {
-              alvo.innerHTML = '<p class="noticias-vazio">Ainda não há publicações ' +
-                'cadastradas. Volte em breve.</p>';
+              alvo.innerHTML = fixos || ('<p class="noticias-vazio">Ainda não há publicações ' +
+                'cadastradas. Volte em breve.</p>');
             }
           }).catch(function () { /* mantém o conteúdo estático da página */ });
       })(alvos[i]);
