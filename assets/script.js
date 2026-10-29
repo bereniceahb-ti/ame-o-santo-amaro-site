@@ -220,15 +220,24 @@ document.addEventListener('DOMContentLoaded', function () {
   // Galerias de fotos: clique amplia a imagem (lightbox com setas/teclado).
   // Usa delegação de evento, então funciona também para galerias que chegam
   // depois do carregamento (ex.: galeria das notícias vinda do Sanity).
-  var lb = null, lbImg, lbCap, itens = [], atual = 0;
+  var lb = null, lbImg, lbVid, lbCap, itens = [], atual = 0;
+  function paraVideo() { if (lbVid) { lbVid.pause(); lbVid.removeAttribute('src'); lbVid.load(); } }
   function mostra(i) {
     atual = (i + itens.length) % itens.length;
     var a = itens[atual], im = a.querySelector('img');
-    lbImg.src = a.getAttribute('href');
+    paraVideo();
+    if (a.hasAttribute('data-video')) {
+      lb.classList.add('is-video');
+      lbVid.src = a.getAttribute('href');
+      var p = lbVid.play(); if (p && p.catch) { p.catch(function () {}); }
+    } else {
+      lb.classList.remove('is-video');
+      lbImg.src = a.getAttribute('href');
+    }
     lbImg.alt = im ? im.alt : '';
     lbCap.textContent = im ? im.alt : '';
   }
-  function fecha() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function fecha() { paraVideo(); lb.classList.remove('open'); document.body.style.overflow = ''; }
   function criaLightbox() {
     lb = document.createElement('div');
     lb.className = 'lightbox';
@@ -236,10 +245,10 @@ document.addEventListener('DOMContentLoaded', function () {
     lb.setAttribute('aria-modal', 'true');
     lb.innerHTML = '<button class="lb-close" aria-label="Fechar">&times;</button>' +
       '<button class="lb-prev" aria-label="Foto anterior">&#8249;</button>' +
-      '<img alt=""><button class="lb-next" aria-label="Próxima foto">&#8250;</button>' +
+      '<img alt=""><video controls playsinline preload="metadata"></video><button class="lb-next" aria-label="Próxima foto">&#8250;</button>' +
       '<p class="lb-cap"></p>';
     document.body.appendChild(lb);
-    lbImg = lb.querySelector('img'); lbCap = lb.querySelector('.lb-cap');
+    lbImg = lb.querySelector('img'); lbVid = lb.querySelector('video'); lbCap = lb.querySelector('.lb-cap');
     lb.querySelector('.lb-close').addEventListener('click', fecha);
     lb.querySelector('.lb-prev').addEventListener('click', function () { mostra(atual - 1); });
     lb.querySelector('.lb-next').addEventListener('click', function () { mostra(atual + 1); });
