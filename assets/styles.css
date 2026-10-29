@@ -712,3 +712,7 @@ section[id], [id].section, .donate-band[id] {
 .lightbox video { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: var(--sombra-lg); background: #000; display: none; }
 .lightbox.is-video video { display: block; }
 .lightbox.is-video img { display: none; }
+
+/* Logo da Escola Luam Pessoa (topo da página e acima da foto em "Estudar para transformar") */
+.page-hero .nucleo-logo.nucleo-logo--luam { width: auto; height: auto; max-width: min(220px, 60vw); padding: 6px; background: #fef9f3; }
+.escola-midia .escola-logo { display: block; width: min(300px, 75%); height: auto; margin: 0 auto 24px; border-radius: var(--raio); background: #fef9f3; box-shadow: var(--sombra-md); }
