@@ -716,3 +716,130 @@ section[id], [id].section, .donate-band[id] {
 /* Logo da Escola Luam Pessoa (topo da página e acima da foto em "Estudar para transformar") */
 .page-hero .nucleo-logo.nucleo-logo--luam { width: auto; height: auto; max-width: min(220px, 60vw); padding: 6px; background: #fef9f3; }
 .escola-midia .escola-logo { display: block; width: min(300px, 75%); height: auto; margin: 0 auto 24px; border-radius: var(--raio); background: #fef9f3; box-shadow: var(--sombra-md); }
+
+/* =========================================================
+   Ajustes nov/2026 — identidade visual por núcleo, layout mais
+   compacto e distinção entre elementos informativos e clicáveis
+   ========================================================= */
+
+/* 1) Só "levanta" no hover o card que tem link. Card puramente
+   informativo fica parado e sem sombra forte (não parece botão). */
+.card:hover { transform: none; box-shadow: var(--sombra-sm); }
+.card:has(a):hover, a.card:hover { transform: translateY(-4px); box-shadow: var(--sombra-md); }
+.card:has(a) .card-link { text-decoration: underline; text-underline-offset: 3px; }
+
+/* 2) Lista informativa compacta (eixos, frentes, "o que oferecemos"):
+   sem fundo de card, sem sombra, ícone pequeno à esquerda. */
+.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 32px; margin-top: 24px; }
+.info-grid.info-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.info-item { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid rgba(26,21,20,.1); }
+.info-item .ii-ico { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 1.05rem; background: var(--branco); color: var(--vermelho); border: 1px solid rgba(26,21,20,.08); }
+.info-item h3 { font-size: 1.02rem; margin: 2px 0 3px; color: var(--vermelho-escuro); }
+.info-item p { margin: 0; font-size: .92rem; line-height: 1.5; color: var(--cinza); }
+@media (max-width: 960px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .info-grid, .info-grid.info-grid--2 { grid-template-columns: 1fr; } }
+
+/* 3) Missão, Visão e Valores (home): faixa informativa em colunas,
+   com divisórias — não mais cards "clicáveis". */
+.mvv { display: grid; grid-template-columns: 1fr 1fr 1.25fr; }
+.mvv > div { padding: 6px 30px; border-left: 2px solid rgba(161,42,36,.25); }
+.mvv > div:first-child { padding-left: 0; border-left: 0; }
+.mvv h3 { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: .1em; color: var(--vermelho); margin-bottom: 10px; }
+.mvv h3 span { font-size: 1.1rem; }
+.mvv p { margin: 0; font-size: .98rem; line-height: 1.6; color: var(--carvao); }
+.mvv .valores { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; font-size: .92rem; color: var(--carvao); }
+.mvv .valores li::before { content: "•"; color: var(--vermelho); margin-right: 6px; }
+#missao-visao-valores { padding: 56px 0; }
+@media (max-width: 860px) { .mvv { grid-template-columns: 1fr; gap: 22px; } .mvv > div { padding: 0 0 0 18px; } .mvv > div:first-child { padding-left: 18px; border-left: 2px solid rgba(161,42,36,.25); } }
+
+/* 4) Cards de pesquisa com miniatura clicável */
+.pub-card .pub-capa img { transition: transform .35s ease; }
+.pub-card:hover .pub-capa img { transform: scale(1.04); }
+.pub-card .pub-acoes { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+.pub-card .pub-acoes .btn { margin-top: 0; }
+.pub-card .pub-body p { color: var(--cinza); font-size: .93rem; margin: -6px 0 16px; line-height: 1.5; }
+.pub-card .btn--ghost { color: var(--vermelho); }
+.pub-card .btn--ghost:hover { background: var(--creme); }
+
+/* 5) Galeria com legenda visível */
+.gallery .g-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 26px 10px 8px; font-size: .76rem; font-weight: 700; line-height: 1.25; color: #fff; letter-spacing: .02em; background: linear-gradient(0deg, rgba(0,0,0,.72), rgba(0,0,0,0)); pointer-events: none; }
+.gallery .g-cap small { display: block; font-weight: 500; opacity: .85; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+
+/* 6) Logo do núcleo no topo (só a logo, sem o nome repetido) */
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.page-hero .nucleo-logo.nucleo-logo--tribunal { width: auto; height: 150px; padding: 10px 16px; background: #fff; }
+
+/* 7) Vídeo principal em destaque (Cine) */
+.video-destaque { position: relative; border-radius: var(--raio); overflow: hidden; background: #000; box-shadow: var(--sombra-lg); aspect-ratio: 16/9; }
+.video-destaque video, .video-destaque iframe { width: 100%; height: 100%; display: block; border: 0; background: #000; }
+
+/* 8) Títulos de seção menores onde pedido */
+.titulo-compacto { font-size: clamp(1.4rem, 2.4vw, 1.85rem) !important; }
+
+/* =========================================================
+   IDENTIDADE VISUAL POR NÚCLEO
+   Cada página de núcleo declara <body data-nucleo="...">. As cores
+   do site são variáveis, então trocá-las aqui repinta cabeçalho,
+   topo, botões, títulos, ícones e destaques da página inteira.
+   O coração do AME continua no cabeçalho/rodapé (marca-mãe).
+   ========================================================= */
+body[data-nucleo] .site-header { background: var(--header-bg); }
+body[data-nucleo] .page-hero { background: var(--hero-bg, var(--vermelho)); }
+body[data-nucleo] .eyebrow { color: var(--acento-texto, var(--vermelho)); }
+body[data-nucleo] .mvv > div, body[data-nucleo] .timeline::before { border-color: var(--linha); }
+body[data-nucleo] .btn--gold { background: var(--acento, var(--dourado)); color: var(--acento-contraste, var(--carvao)); }
+body[data-nucleo] .btn--gold:hover { filter: brightness(.95); }
+body[data-nucleo] .cta-band { background: var(--vermelho-escuro) !important; }
+body[data-nucleo] .site-footer { background: var(--rodape-bg, var(--carvao)); }
+body[data-nucleo] .info-item { border-top-color: var(--linha); }
+body[data-nucleo] .di-destaques { background: var(--vermelho-escuro); }
+
+/* Tribunal da Terra — verde floresta + dourado (da logo) */
+body[data-nucleo="tribunal"] {
+  --vermelho: #24603A; --vermelho-vivo: #2E7D46; --vermelho-escuro: #153A22;
+  --creme: #E6EEDD; --creme-2: #F5F8F0;
+  --acento: #C9A23F; --acento-contraste: #1A1514; --acento-texto: #24603A;
+  --header-bg: rgba(21,58,34,.97); --rodape-bg: #10241A;
+  --linha: #D6E0CC; --trilho: #E6ECDF; --tom-claro: #B5D1A9;
+}
+/* Núcleo Elas — bordô (da logo) + rosé */
+body[data-nucleo="elas"] {
+  --vermelho: #7A2C3E; --vermelho-vivo: #94394E; --vermelho-escuro: #4E1A27;
+  --creme: #F4E3E8; --creme-2: #FBF6F7;
+  --acento: #E7C3CC; --acento-contraste: #4E1A27;
+  --header-bg: rgba(78,26,39,.97); --rodape-bg: #2B1117;
+  --linha: #EBD5DB; --trilho: #F1E4E8; --tom-claro: #E2B3BF;
+}
+/* Escola Luam Pessoa — verde-petróleo + terracota + creme (da logo) */
+body[data-nucleo="luam"] {
+  --vermelho: #1F5F5B; --vermelho-vivo: #2E7D73; --vermelho-escuro: #143F3D;
+  --creme: #F3EADB; --creme-2: #FBF7F0;
+  --acento: #D27A4A; --acento-contraste: #fff;
+  --header-bg: rgba(20,63,61,.97); --rodape-bg: #0F2A29;
+  --linha: #E3D8C6; --trilho: #EDE5D7; --tom-claro: #9FC7BF;
+}
+body[data-nucleo="luam"] .feature-list .ck { background: var(--acento); }
+/* Observatório do Santo Amaro — grafite + vermelho-sinal (da logo) */
+body[data-nucleo="observatorio"] {
+  --vermelho: #B8232B; --vermelho-vivo: #D2333B; --vermelho-escuro: #232326;
+  --creme: #ECECEC; --creme-2: #F7F7F6;
+  --acento: #D2333B; --acento-contraste: #fff;
+  --header-bg: rgba(24,24,26,.97); --hero-bg: #232326; --rodape-bg: #141416;
+  --linha: #DDDDDD; --trilho: #E8E8E8; --tom-claro: #F0A7AA;
+}
+body[data-nucleo="observatorio"] .section--vermelho { background: #2C2C30; }
+body[data-nucleo="observatorio"] .section--vermelho .num { color: #fff; }
+/* Cine Santo Amaro — azul-noite de sala de cinema + dourado de letreiro
+   (proposta provisória até chegar a logo oficial do Cine) */
+body[data-nucleo="cine"] {
+  --vermelho: #3B3576; --vermelho-vivo: #4D4696; --vermelho-escuro: #1D1A3D;
+  --creme: #ECEAF5; --creme-2: #F8F7FC;
+  --acento: #E7B53C; --acento-contraste: #1D1A3D; --acento-texto: #3B3576;
+  --header-bg: rgba(29,26,61,.97); --rodape-bg: #121027;
+  --linha: #DCD8EC; --trilho: #E8E6F2; --tom-claro: #BDB7E3;
+}
+body[data-nucleo] .pub-card .pub-capa-gerada { background: linear-gradient(145deg, var(--vermelho-escuro), var(--vermelho) 62%, var(--acento, #C7702E)); }
+body[data-nucleo] .info-item .ii-ico { color: var(--vermelho); }
+body[data-nucleo] .section--creme .info-item .ii-ico { background: #fff; }
+body[data-nucleo] .section:not(.section--creme) .info-item .ii-ico { background: var(--creme); border-color: transparent; }
+.titulo-compacto { text-align: left !important; }

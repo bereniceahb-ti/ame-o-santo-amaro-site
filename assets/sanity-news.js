@@ -18,6 +18,9 @@
   var cfg = window.SANITY_CONFIG || {};
   var CONFIGURADO = !!cfg.projectId && cfg.projectId.indexOf('__') !== 0;
 
+  // Páginas dentro de /nucleos/ precisam subir um nível para achar noticia.html.
+  var RAIZ = /\/nucleos\//.test(window.location.pathname) ? '../' : '';
+
   var MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
                'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -90,7 +93,7 @@
         metaHTML(n) +
         '<h3>' + escapaHTML(n.title) + '</h3>' +
         '<p>' + escapaHTML(n.summary || '') + '</p>' +
-        '<a class="card-link" href="noticia.html?slug=' +
+        '<a class="card-link" href="' + RAIZ + 'noticia.html?slug=' +
           encodeURIComponent(n.slug) + '">Ler mais &rarr;</a>' +
       '</div></article>';
   }
@@ -102,7 +105,7 @@
         metaHTML(n) +
         '<h3>' + escapaHTML(n.title) + '</h3>' +
         '<p>' + escapaHTML(n.summary || '') + '</p>' +
-        '<a class="card-link" style="margin-top:auto;display:inline-block" href="noticia.html?slug=' +
+        '<a class="card-link" style="margin-top:auto;display:inline-block" href="' + RAIZ + 'noticia.html?slug=' +
           encodeURIComponent(n.slug) + '">Ler notícia completa &rarr;</a>' +
       '</div></article>';
   }
@@ -206,11 +209,21 @@
 
   // Notícias filtradas por categoria (ex.: posts/atualizações do Observatório
   // exibidos dentro da própria página do núcleo, além de aparecerem em "Notícias").
-  function buscaListaPorCategoria(categoria, limite) {
+  // Com "termo" (data-noticias-termo), também entram as notícias que citam o
+  // núcleo no título ou no resumo, mesmo cadastradas em outra categoria
+  // (ex.: "Observatório do Santo Amaro na Conferência..." na categoria
+  // Comunicação). Sem isso a página dizia "não há notícias" enquanto a
+  // página de Notícias mostrava várias do núcleo.
+  function buscaListaPorCategoria(categoria, limite, termo) {
     var fatia = limite ? ('[0...' + limite + ']') : '';
-    var groq = '*[_type=="noticia" && category==$categoria && defined(slug.current)]' +
+    var filtro = termo ?
+      '(category==$categoria || title match $termo || summary match $termo)' :
+      'category==$categoria';
+    var groq = '*[_type=="noticia" && ' + filtro + ' && defined(slug.current)]' +
       '|order(coalesce(publishedAt,_createdAt) desc)' + fatia + CAMPOS_LISTA;
-    return consulta(groq, { categoria: categoria });
+    var params = { categoria: categoria };
+    if (termo) { params.termo = termo; }
+    return consulta(groq, params);
   }
 
   // ---- Publicações (pesquisas/artigos/relatórios) ---------------------
@@ -473,7 +486,8 @@
         var categoria = alvo.getAttribute('data-noticias-categoria');
         if (!CONFIGURADO || !categoria) { return; }
         var limiteAttr = alvo.getAttribute('data-limite');
-        buscaListaPorCategoria(categoria, limiteAttr ? Number(limiteAttr) : null)
+        buscaListaPorCategoria(categoria, limiteAttr ? Number(limiteAttr) : null,
+            alvo.getAttribute('data-noticias-termo'))
           .then(function (lista) {
             if (lista && lista.length) {
               alvo.innerHTML = lista.map(cartaoHTML).join('');
