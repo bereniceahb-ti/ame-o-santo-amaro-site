@@ -847,3 +847,19 @@ body[data-nucleo] .info-item .ii-ico { color: var(--vermelho); }
 body[data-nucleo] .section--creme .info-item .ii-ico { background: #fff; }
 body[data-nucleo] .section:not(.section--creme) .info-item .ii-ico { background: var(--creme); border-color: transparent; }
 .titulo-compacto { text-align: left !important; }
+
+/* Capa padrão "território" — publicações da Biblioteca sem imagem de capa.
+   Curvas de nível (relevo do Morro Santo Amaro) na cor do núcleo. */
+.capa-territorio { position: relative; height: 100%; overflow: hidden; color: #fff; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; background: var(--ct-fundo); }
+.capa-territorio svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.capa-territorio .ct-linhas { fill: none; stroke: var(--ct-acento); stroke-opacity: .38; stroke-width: 1.3; }
+.capa-territorio .ct-tipo, .capa-territorio .ct-titulo, .capa-territorio .ct-nucleo { position: relative; }
+.capa-territorio .ct-tipo { font-family: var(--fonte-titulo); font-weight: 800; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.capa-territorio .ct-tipo::before { content: ""; width: 18px; height: 3px; border-radius: 2px; background: var(--ct-acento); }
+.capa-territorio .ct-titulo { margin-top: auto; font-family: var(--fonte-display); font-weight: var(--peso-display); font-size: 1.15rem; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.capa-territorio .ct-nucleo { font-size: .78rem; opacity: .85; }
+.capa-territorio--tribunal { --ct-fundo: #153A22; --ct-acento: #C9A23F; }
+.capa-territorio--elas     { --ct-fundo: #4E1A27; --ct-acento: #E7C3CC; }
+.capa-territorio--luam     { --ct-fundo: #143F3D; --ct-acento: #D27A4A; }
+.capa-territorio--cine     { --ct-fundo: #1D1A3D; --ct-acento: #E7B53C; }
+.capa-territorio--grafite  { --ct-fundo: #232326; --ct-acento: #D2333B; }

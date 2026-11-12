@@ -228,7 +228,7 @@
 
   // ---- Publicações (pesquisas/artigos/relatórios) ---------------------
   var CAMPOS_PUBLICACAO =
-    '{_id,title,tipo,resumo,autores,destaque,"date":publishedAt,' +
+    '{_id,title,tipo,nucleo,resumo,autores,destaque,"date":publishedAt,' +
     '"capaRef":capa.asset._ref,"capaAlt":capa.alt,' +
     '"arquivoUrl":arquivo.asset->url,linkExterno}';
 
@@ -245,12 +245,58 @@
     return consulta(groq, { nucleo: nucleo });
   }
 
+  // ---- Capa padrão "território" (publicações sem imagem de capa) -------
+  // Grafismo de curvas de nível (relevo do morro) na cor do núcleo.
+  // Regra: a cor segue o núcleo da publicação; Artigos e publicações do
+  // Observatório, Caminho das Águas, Repositório ou Geral ficam em grafite.
+  var NUCLEOS_CAPA = {
+    'tribunal da terra': { tema: 'tribunal', nome: 'Tribunal da Terra' },
+    'elas':              { tema: 'elas',     nome: 'AME Elas' },
+    'luam pessoa':       { tema: 'luam',     nome: 'Escola Luam Pessoa' },
+    'cine santo amaro':  { tema: 'cine',     nome: 'Cine Santo Amaro' },
+    'observatorio':      { tema: 'grafite',  nome: 'Observatório do Santo Amaro' },
+    'caminho das aguas': { tema: 'grafite',  nome: 'Pesquisa Caminho das Águas' }
+  };
+  function semAcentoCapa(t) {
+    return (t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  }
+  function hashTexto(t) {
+    var h = 0;
+    for (var i = 0; i < (t || '').length; i++) { h = (h * 31 + t.charCodeAt(i)) | 0; }
+    return Math.abs(h);
+  }
+  function capaTerritorioHTML(p) {
+    var info = NUCLEOS_CAPA[semAcentoCapa(p.nucleo)] ||
+      { tema: 'grafite', nome: 'Instituto de Direitos Humanos AME' };
+    var tema = /artigo/.test(semAcentoCapa(p.tipo)) ? 'grafite' : info.tema;
+    // Desloca o desenho conforme o título, para as capas não ficarem idênticas.
+    var h = hashTexto(p.title);
+    var dx = (h % 120) - 60, dy = (Math.floor(h / 120) % 40) - 20;
+    var linhas = '';
+    for (var k = 0; k < 7; k++) {
+      var y = 40 + k * 26;
+      linhas += '<path d="M-40 ' + (y + 40) + ' C 60 ' + (y - 10) + ', 140 ' + (y + 50) +
+        ', 230 ' + (y + 10) + ' S 380 ' + (y - 30) + ', 460 ' + (y + 5) + '"/>';
+    }
+    var pico = '<ellipse cx="300" cy="70" rx="58" ry="26"/><ellipse cx="300" cy="70" rx="36" ry="15"/>' +
+      '<ellipse cx="300" cy="70" rx="15" ry="6"/>';
+    return '<div class="thumb"><div class="capa-territorio capa-territorio--' + tema + '" role="img" aria-label="' +
+        escapaHTML((p.tipo || 'Publicação') + ': ' + p.title) + '">' +
+      '<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+        '<g class="ct-linhas" transform="translate(' + dx + ' ' + dy + ')">' + linhas + pico + '</g></svg>' +
+      '<span class="ct-tipo">' + escapaHTML(p.tipo || 'Publicação') + '</span>' +
+      '<span class="ct-titulo">' + escapaHTML(p.title) + '</span>' +
+      '<span class="ct-nucleo">' + escapaHTML(info.nome) + '</span>' +
+    '</div></div>';
+  }
+
   function cartaoPublicacaoHTML(p) {
     var link = p.arquivoUrl || p.linkExterno;
     var rotulo = p.arquivoUrl ? 'Baixar PDF' : 'Acessar';
     var dest = p.destaque ? '<span>&#9733; Destaque</span>' : '';
     return '<article class="news-card">' +
-      thumbHTML({ imgRef: p.capaRef, imgAlt: p.capaAlt || p.title, title: p.title }) +
+      (p.capaRef ? thumbHTML({ imgRef: p.capaRef, imgAlt: p.capaAlt || p.title, title: p.title })
+                 : capaTerritorioHTML(p)) +
       '<div class="body">' +
         '<div class="meta"><span>' + escapaHTML(p.tipo || 'Publicação') + '</span>' +
           (formataData(p.date) ? '<span>' + formataData(p.date) + '</span>' : '') + dest +
