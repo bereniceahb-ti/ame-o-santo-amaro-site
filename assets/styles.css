@@ -869,3 +869,5 @@ body[data-nucleo] .section:not(.section--creme) .info-item .ii-ico { background:
 .gallery.gallery--videos .g-item.tall { grid-row: auto; aspect-ratio: 9/16; min-height: 0; }
 @media (max-width:999px){ .gallery.gallery--videos { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width:760px){ .gallery.gallery--videos { grid-template-columns: repeat(2, 1fr); } }
+/* Galeria do Tribunal da Terra: parágrafo na largura do título, justificado */
+#galeria .gallery-lead { max-width: none; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
