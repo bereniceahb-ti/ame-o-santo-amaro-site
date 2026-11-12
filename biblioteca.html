@@ -38,7 +38,7 @@
   <span class="eyebrow">Acervo</span>
   <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
     <h2 class="section-title mb-0">Publicações e trabalhos</h2>
-    <div class="chips"><span class="chip">Todos</span><span class="chip">Pesquisas</span><span class="chip">Artigos</span><span class="chip">Relatórios</span></div>
+    <div class="chips" role="group" aria-label="Filtrar publicações" data-filtro-biblioteca><button type="button" class="chip is-active" data-filtro="todos" aria-pressed="true">Todos</button><button type="button" class="chip" data-filtro="pesquisas" aria-pressed="false">Pesquisas e dados</button><button type="button" class="chip" data-filtro="artigos" aria-pressed="false">Artigos</button><button type="button" class="chip" data-filtro="relatorios" aria-pressed="false">Relatórios</button><button type="button" class="chip" data-filtro="documentos" aria-pressed="false">Documentos</button></div>
   </div>
 
   <div class="grid grid-3 mt-32" data-publicacoes-nucleo="todos">
@@ -71,6 +71,52 @@
 <a class="wa-float" href="https://wa.me/5521998277633" target="_blank" rel="noopener" aria-label="WhatsApp">✆</a>
 <script src="assets/sanity-config.js"></script>
 <script src="assets/sanity-news.js"></script>
+<script>
+/* Filtro da Biblioteca: classifica cada card pelo tipo (1º item do .meta)
+   e mostra só os da categoria escolhida. Funciona também com os cards que
+   chegam depois, vindos do Sanity. */
+(function () {
+  var barra = document.querySelector('[data-filtro-biblioteca]');
+  var grade = document.querySelector('[data-publicacoes-nucleo]');
+  if (!barra || !grade) { return; }
+  var atual = 'todos';
+  function semAcento(t) { return (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  function categoria(card) {
+    var tipo = semAcento((card.querySelector('.meta span') || {}).textContent);
+    if (/pesquisa|dado|mapa|cartografia/.test(tipo)) { return 'pesquisas'; }
+    if (/artigo/.test(tipo)) { return 'artigos'; }
+    if (/relatorio/.test(tipo)) { return 'relatorios'; }
+    return 'documentos';
+  }
+  function aplica() {
+    var cards = grade.querySelectorAll('article'), visiveis = 0;
+    for (var i = 0; i < cards.length; i++) {
+      var mostra = atual === 'todos' || categoria(cards[i]) === atual;
+      cards[i].style.display = mostra ? '' : 'none';
+      if (mostra) { visiveis++; }
+    }
+    var aviso = grade.querySelector('.filtro-vazio');
+    if (!visiveis && cards.length) {
+      if (!aviso) { aviso = document.createElement('p'); aviso.className = 'noticias-vazio filtro-vazio'; aviso.textContent = 'Nenhuma publicação nesta categoria por enquanto.'; grade.appendChild(aviso); }
+    } else if (aviso) { aviso.remove(); }
+  }
+  barra.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-filtro]');
+    if (!b) { return; }
+    atual = b.getAttribute('data-filtro');
+    var todos = barra.querySelectorAll('[data-filtro]');
+    for (var i = 0; i < todos.length; i++) {
+      var on = todos[i] === b;
+      todos[i].classList.toggle('is-active', on);
+      todos[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    aplica();
+  });
+  new MutationObserver(function (m) {
+    for (var i = 0; i < m.length; i++) { if (m[i].target === grade && m[i].addedNodes.length) { aplica(); return; } }
+  }).observe(grade, { childList: true });
+})();
+</script>
 <script src="assets/script.js"></script>
 </body>
 </html>

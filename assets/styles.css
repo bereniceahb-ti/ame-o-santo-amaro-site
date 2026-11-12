@@ -335,6 +335,10 @@ h1,h2,h3,h4 { font-family: var(--fonte-titulo); line-height: 1.1; margin: 0 0 .4
 /* ---------- Pills / chips ---------- */
 .chips { display: flex; flex-wrap: wrap; gap: 10px; }
 .chip { background:#fff; color: var(--vermelho-escuro); border:1px solid rgba(26,21,20,.1); border-radius:999px; padding:8px 16px; font-size:.88rem; font-weight:600; box-shadow: var(--sombra-sm); }
+button.chip { font-family: inherit; cursor: pointer; transition: background .15s, color .15s; }
+button.chip:hover { border-color: var(--vermelho-escuro); }
+button.chip.is-active { background: var(--vermelho-escuro); color:#fff; border-color: var(--vermelho-escuro); }
+button.chip:focus-visible { outline: 2px solid var(--vermelho-escuro); outline-offset: 2px; }
 
 /* ---------- CTA band ---------- */
 .cta-band { background: var(--carvao); color: var(--creme-2); border-radius: var(--raio); padding: 48px; text-align: center; }
