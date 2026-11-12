@@ -863,3 +863,9 @@ body[data-nucleo] .section:not(.section--creme) .info-item .ii-ico { background:
 .capa-territorio--luam     { --ct-fundo: #143F3D; --ct-acento: #D27A4A; }
 .capa-territorio--cine     { --ct-fundo: #1D1A3D; --ct-acento: #E7B53C; }
 .capa-territorio--grafite  { --ct-fundo: #232326; --ct-acento: #D2333B; }
+
+/* Galeria só de vídeos verticais (ex.: Tribunal da Terra) */
+.gallery.gallery--videos { grid-template-columns: repeat(6, 1fr); }
+.gallery.gallery--videos .g-item.tall { grid-row: auto; aspect-ratio: 9/16; min-height: 0; }
+@media (max-width:999px){ .gallery.gallery--videos { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width:760px){ .gallery.gallery--videos { grid-template-columns: repeat(2, 1fr); } }
