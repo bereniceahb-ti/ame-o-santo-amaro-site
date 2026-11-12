@@ -234,6 +234,12 @@
 
   function buscaPublicacoes(nucleo, limite) {
     var fatia = limite ? ('[0...' + limite + ']') : '';
+    // nucleo "todos" (Biblioteca): reúne as publicações de TODOS os núcleos
+    // que tenham PDF ou link, para a Biblioteca espelhar o que está nos núcleos.
+    if (nucleo === 'todos') {
+      return consulta('*[_type=="publicacao" && (defined(arquivo) || defined(linkExterno))]' +
+        '|order(coalesce(publishedAt,_createdAt) desc)' + fatia + CAMPOS_PUBLICACAO);
+    }
     var groq = '*[_type=="publicacao" && nucleo==$nucleo]' +
       '|order(coalesce(publishedAt,_createdAt) desc)' + fatia + CAMPOS_PUBLICACAO;
     return consulta(groq, { nucleo: nucleo });
